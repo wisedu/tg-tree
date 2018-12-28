@@ -1,0 +1,20 @@
+{
+    "presets": [
+      ["es2015", {
+        "modules": false
+      }],
+      "stage-2",
+      "stage-0"
+    ],
+    "plugins": ["transform-runtime", ["component", [{
+      "libraryName": "bh-mint-ui2",
+      "style": true
+    }]]],
+    "comments": false,
+    "env": {
+      "test": {
+        "plugins": ["istanbul"]
+      }
+    }
+  }
+  

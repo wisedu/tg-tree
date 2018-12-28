@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-color: #EDF2FB;
+    font-family: ZhiFont, ".SFNSText-Regular", "Helvetica Neue", Roboto, "Segoe UI", sans-serif;;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+input:focus {
+  outline: 0;
+}
+/*设置input,textarea默认placeholder样式*/
+input::-webkit-input-placeholder {/*WebKit browsers*/
+  color:#C4C9D9;
+}
+input:-moz-placeholder {/*Mozilla Firefox 4 to 18*/
+  color:#C4C9D9;
+}
+input::-moz-placeholder {/*Mozilla Firefox 18+*/
+  color:#C4C9D9;
+}
+input:-ms-input-placeholder {/*Internet Explore*/
+  color:#C4C9D9;
+}
