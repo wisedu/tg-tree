@@ -51,9 +51,4 @@
   .tree-breadcrumb-child:last-child > svg {
     display: none;
   }
-  svg{
-    vertical-align: bottom;
-    width: 18px;
-    height: 18px;
-  }
 </style>>
