@@ -1,7 +1,7 @@
 <template>
   <span class="tree-breadcrumb-child">
     <span class="tree-breadcrumb-innner" @click.stop="clickHandle(item)">
-      <slot>{{item.label}}</slot>
+      <slot>{{item.name}}</slot>
     </span>
     <svg aria-hidden="true">
       <use xlink:href="#arrow-right"></use>
@@ -27,8 +27,7 @@
     methods: {
       clickHandle(item){
         var index = this.$el.getAttribute('data-index');
-        if(index === 'current') return;
-        this.$emit('item-click',item,Number(index));
+        this.$emit('bread-click',item,Number(index));
       }
     },
     mounted() {

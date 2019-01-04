@@ -23,7 +23,7 @@ export default {
     value: {},
     placeholder: {
       type: String,
-      default: '请输入'
+      default: '搜索'
     }
   },
   watch: {

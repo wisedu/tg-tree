@@ -1,5 +1,5 @@
 
-const Index = resolve => require(['./pages/index/index.vue'], resolve)
+const Index = resolve => require(['./pages/index.vue'], resolve)
 
 export default {
     routes: [

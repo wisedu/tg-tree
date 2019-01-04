@@ -16,7 +16,6 @@ export default {
     //
   },
   mounted() {
-    const items = this.$el.querySelectorAll('.tree-breadcrumb-child');
     const track = this.$el.querySelector('.tree-breadcrumb-track');
     var boxWidth = window.getComputedStyle(this.$el).width;
       boxWidth = Number(boxWidth.slice(0,-2));
@@ -26,17 +25,6 @@ export default {
       var extra = trackWidth - boxWidth;
       this.$el.scrollLeft = extra;
     }
-    items.forEach(function(item,index){
-      if (items.length-1 === index) {
-        item.setAttribute('data-index','current');
-      }else{
-        item.setAttribute('data-index', index);
-      }
-    });
-
-    // this.$el.addEventListener('scroll',function(e){
-    //   console.log(e.target.scrollWidth)
-    // })
   }
 }
 </script>

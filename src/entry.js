@@ -1,4 +1,4 @@
-import utils from './utils.js';
+import utils from './components/utils.js';
 import TgTree from './components/tg-tree.vue';
 const version = "0.0.0";
 const description = "A mobile tree component by Vue";

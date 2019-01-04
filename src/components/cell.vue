@@ -23,7 +23,7 @@
         <div
           class="tree-cell-content"
           :class="[align]">
-          <slot>{{value}}</slot>
+          <slot>{{keyName}}</slot>
         </div>
         <!-- Right Control -->
         <div
@@ -53,7 +53,7 @@ export default {
       type: String,
       default: '',
     },
-    value: {
+    keyName: {
       type: String,
       default: '',
     },
@@ -74,7 +74,7 @@ export default {
       type: String,
       default: 'left',
       validator(value) {
-        return ['left', 'right', 'center'].indexOf(value) > -1
+        return ['left', 'right', 'center', 'default'].indexOf(value) > -1
       },
     },
     solid: {
