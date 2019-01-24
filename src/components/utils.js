@@ -47,7 +47,6 @@ utils.Post = (url, data = null, config = {}) => {
         contentType: "application/json"
       },
       ...config
-      // adapter: config.mockFlag ? () => MOCK_DATA[config.mock] : null
   })
 }
 

@@ -1,13 +1,12 @@
 <template>
   <div class="tree-radio-list">
-
-    <tree-cell v-for="(item, index) in treeData" :key="index" :title="item.name" @on-label-click="$_checkedClick(item)" align="default">
-      <label slot="left" class="icon" for="tree-radio-next" @click.stop="$_checkedClick(item)">
+    <tree-cell v-for="(item, index) in treeData" :key="index" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
+      <label slot="left" class="icon" for="tree-radio-next" @click.stop="$_checkedClick(item)" v-if="parentSelectable || !item.isParent">
         <svg aria-hidden="true">
           <use :xlink:href="currentValue === item.id?'#radio-checked':'#check'"></use>
         </svg>
       </label>
-      <div slot="right" id="tree-radio-next" class="tree-radio-next" @click.stop="$_nextClick(item)" v-if="item.children && item.children.length">
+      <div slot="right" id="tree-radio-next" class="tree-radio-next" @click.stop="$_nextClick(item)" v-if="(isAsync&&item.isParent) || (item.children && item.children.length)">
         <label for="icon-text">
           <svg aria-hidden="true">
             <use xlink:href="#tree"></use>
@@ -37,6 +36,14 @@ export default {
     iconText: {
       type: String,
       default: '下级'
+    },
+    isAsync: {
+      type: Boolean,
+      default: false
+    },
+    parentSelectable: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -59,6 +66,7 @@ export default {
   },
   methods: {
     $_checkedClick(item) {
+      if(!this.parentSelectable&&item.isParent) return; // 父级不可选
       this.currentValue = item.id;
       this.$emit('item-checked', item);
     },
@@ -83,6 +91,10 @@ export default {
     width: calc(100% - 51px);
     height: 1px;
     background: #EDF2FB;
+  }
+  .tree-radio-list .tree-cell.parent-not-selectable:after {
+    left: 17px;
+    width: calc(100% - 17px);
   }
   .tree-cell-right {
     flex: 1 0 86px;
