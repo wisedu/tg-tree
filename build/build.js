@@ -57,8 +57,7 @@ components.forEach(item => {
 });
 
 let template = 
-`import utils from './components/utils.js';
-import loadSprite from './load-spirte.js';
+`import loadSprite from './load-spirte.js';
 ${jsImport.join("\r\n")}
 const version = "${packageJSON.version}";
 const description = "${packageJSON.description}";
@@ -70,7 +69,7 @@ loadSprite();
 const install = function (Vue, opts = {}) {
     if (install.installed) return;
     Object.keys(components).forEach((key) => {
-        if (key === "utils"||key === "loadSprite") return;
+        if (key === "loadSprite") return;
         Vue.component(components[key].name, components[key]);
     });
 };

@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import utils from './utils';
-import TreeSearch from './search';
-import TreeBreadcrumb from './breadcrumb';
-import TreeBreadcrumbItem from './breadcrumb-item';
-import TreeCell from './cell';
-import TreeRadioList from './radio-list';
+import utils from './source/utils';
+import TreeSearch from './source/search';
+import TreeBreadcrumb from './source/breadcrumb';
+import TreeBreadcrumbItem from './source/breadcrumb-item';
+import TreeCell from './source/cell';
+import TreeRadioList from './source/radio-list';
 
 
 export default {
@@ -130,6 +130,7 @@ export default {
       if(typeof val === 'boolean') {
         this.maskShow = val;
         if(val){
+          this.radioValue = null;
           this.openMaskAction();
         }
       }else{

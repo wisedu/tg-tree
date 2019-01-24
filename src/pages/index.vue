@@ -22,7 +22,7 @@
 </style>
 
 <script type="text/javascript">
-    import utils from '../components/utils'
+    import utils from '../components/source/utils'
     import TgTree from '../components/tg-tree.vue'
     import treeData from "../../mock/tree";
     export default {

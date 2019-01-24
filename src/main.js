@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './app.vue';
 import route from './router';
-import * as utils from './components/utils'
+import * as utils from './components/source/utils'
 import loadSprite from './load-spirte'
 
 loadSprite();
