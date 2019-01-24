@@ -187,14 +187,14 @@ export default {
         this.isSamelevelCheck(item);
         this.sameLevel = item.pId;
         this.dealWithBread(item);
-        this.closeMaskAction();
+        this.closeMaskAction(item);
       }else{
         if(this.isSamelevelCheck(item)) return;
         this.sameLevel = item.pId;
         this.dealWithBread(item);
         // 父级不可选模式(parentSelectable = false)
         if(item.isParent === 0) {
-          this.closeMaskAction();
+          this.closeMaskAction(item);
         }
       }
     },
@@ -301,8 +301,9 @@ export default {
     },
     /**
      *  功能说明： 关闭遮罩选择层，去除body禁用样式，处理外抛或外部显示数据
+     *   @item: 当前选中项
      */
-    closeMaskAction(){
+    closeMaskAction(item){
       this.maskShow = false;
       // 解除body滚动
       document.body.classList.remove( 'tree-overflow-hidden');
