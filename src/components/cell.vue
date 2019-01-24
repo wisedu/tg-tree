@@ -105,6 +105,7 @@ export default {
     align-items: center;
     min-height: 50px;
     padding: 8px 17px;
+    box-sizing: border-box;
   }
   .tree-cell-left {
     display: flex;

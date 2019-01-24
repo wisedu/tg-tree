@@ -58,6 +58,7 @@ components.forEach(item => {
 
 let template = 
 `import utils from './components/utils.js';
+import loadSprite from './load-spirte.js';
 ${jsImport.join("\r\n")}
 const version = "${packageJSON.version}";
 const description = "${packageJSON.description}";
@@ -65,17 +66,18 @@ const author = "${packageJSON.author}";
 const components = {
     ${jsClass.join(",")}
 };
+loadSprite();
 const install = function (Vue, opts = {}) {
     if (install.installed) return;
     Object.keys(components).forEach((key) => {
-        if (key === "utils") return;
+        if (key === "utils"||key === "loadSprite") return;
         Vue.component(components[key].name, components[key]);
     });
 };
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue);
 }
-export {utils, version, description, author}
+export { version, description, author}
 export default Object.assign({}, {install, ...components});`
 
 fs.writeFileSync(OUTPUT_PATH, template);

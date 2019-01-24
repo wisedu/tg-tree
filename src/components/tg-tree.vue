@@ -50,7 +50,7 @@ import TreeRadioList from './radio-list';
 
 
 export default {
-  name: 'tree-tree',
+  name: 'tg-tree',
   components: {
     [TreeSearch.name]: TreeSearch,
     [TreeBreadcrumb.name]: TreeBreadcrumb,
@@ -334,6 +334,7 @@ export default {
     left: 0;
     width: 100%;
     background-color: #EDF2FB;
+    z-index: 999;
   }
   .tree-overflow-hidden {
     overflow: hidden !important;
