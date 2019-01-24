@@ -57,7 +57,7 @@ components.forEach(item => {
 });
 
 let template = 
-`import utils from './utils.js';
+`import utils from './components/utils.js';
 ${jsImport.join("\r\n")}
 const version = "${packageJSON.version}";
 const description = "${packageJSON.description}";
