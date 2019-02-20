@@ -33,7 +33,7 @@
         </div>
         <!-- Arrow Icon -->
         <i v-if="arrow" class="tree-cell-arrow-right">
-          <svg aria-hidden="true">
+          <svg aria-hidden="true" class="tree-svg">
             <use xlink:href="#arrow-right"></use>
           </svg>
         </i>
@@ -79,7 +79,7 @@ export default {
     },
     solid: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   methods: {
@@ -91,7 +91,7 @@ export default {
   }
 }
 </script>
-<style lang="css">
+<style lang="css" scoped>
   .tree-cell {
     position: relative;
     color: #43454F;

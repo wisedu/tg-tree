@@ -12,6 +12,7 @@
       :arrow="arrow"
       @click="$_cellClick"
       style="margin-bottom:5px;">
+      <span v-if="!labelName" class="tree-placeholder">{{placeholder}}</span>
     </tree-cell>
     <div class="tree-mask" v-show="maskShow" :style="[{height: vh + 'px'}]">
       <!-- search搜索框 -->
@@ -34,8 +35,11 @@
         ref="radioList" 
         :is-async="isAsync" 
         :parent-selectable="parentSelectable"
-        :style="[{height: (vh-55) + 'px'}]">
+        :style="[{height: (vh-105) + 'px'}]">
       </tree-radio-list>
+      <div class="tree-button-cancel" v-if="isView && typeof value !== 'boolean'">
+        <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_btnClick">取消</tree-button>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +51,7 @@ import TreeBreadcrumb from './source/breadcrumb';
 import TreeBreadcrumbItem from './source/breadcrumb-item';
 import TreeCell from './source/cell';
 import TreeRadioList from './source/radio-list';
+import TreeButton from './source/button';
 
 
 export default {
@@ -56,7 +61,8 @@ export default {
     [TreeBreadcrumb.name]: TreeBreadcrumb,
     [TreeBreadcrumbItem.name]: TreeBreadcrumbItem,
     [TreeCell.name]: TreeCell,
-    [TreeRadioList.name]: TreeRadioList
+    [TreeRadioList.name]: TreeRadioList,
+    [TreeButton.name]: TreeButton
   },
   data(){
     return {
@@ -95,6 +101,10 @@ export default {
     align: {
       type: String,
       default: 'right'
+    },
+    placeholder: {
+      type: String,
+      default: '请选择'
     },
     hasSearch: {
       type: Boolean,
@@ -138,7 +148,8 @@ export default {
       }
     },
     radioValue: function(newVal) {
-      if(this.isView){
+      // 注：newval == null,即非选中状态，不改变value值
+      if(this.isView && newVal != null){
         this.$emit('input',newVal)
       }
     },
@@ -209,6 +220,10 @@ export default {
       }
       this.dealWithBread(item);
     },
+    $_btnClick(e) {
+      this.maskShow = false;
+      document.body.classList.remove( 'tree-overflow-hidden');
+    },
     /**
      *  功能说明：判断当前选项是否与上一次itemChecked同属同一父级下
      *  @item: 当前选项对象
@@ -258,7 +273,6 @@ export default {
     initial() {
       const treeJson = utils.toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
       if(!treeJson.length) return;
-      console.log(treeJson)
       this.breadOptions[0].children = treeJson;
       if(this.radioValue == null) {
         this.radioOptions = treeJson;
@@ -298,6 +312,12 @@ export default {
       if(this.isAsync) {
         this.breadOptions = [{name: '全部',id:''}];
         this.sameLevel = null;
+      }else{
+        if(this.options.length){
+          this.breadOptions = [{name: '全部',id:''}];
+          this.radioValue = this.value;
+          this.initial();
+        }
       }
     },
     /**
@@ -309,10 +329,7 @@ export default {
       // 解除body滚动
       document.body.classList.remove( 'tree-overflow-hidden');
       if(this.isView) this.labelName = item.name;
-      // 当isView = false,即非嵌套cell模式时，往外跑出选中值
-      if(!this.isView){
-        this.$emit('selected-click',item);
-      }
+      this.$emit('selected-click',item);
     }
   },
   created() {
@@ -321,13 +338,8 @@ export default {
 };
 </script>
 <style lang="css">
-  .tg-tree .tree-breadcrumb {
+  .tree-breadcrumb {
     margin-bottom: 5px;
-  }
-  svg{
-    vertical-align: bottom;
-    width: 18px;
-    height: 18px;
   }
   .tree-mask {
     position: fixed;
@@ -342,5 +354,18 @@ export default {
   }
   .tree-radio-list {
     overflow-y: auto;
+  }
+  .tree-placeholder {
+    color: #C4C9D9;
+  }
+  .tree-svg{
+    vertical-align: bottom;
+    width: 21px;
+    height: 21px;
+  }
+  .tree-button-cancel {
+    height: 50px;
+    background-color: #fff; 
+    padding: 7px 0;
   }
 </style>

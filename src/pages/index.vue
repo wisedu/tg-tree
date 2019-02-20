@@ -3,11 +3,12 @@
         <tg-tree 
             title="单选树" 
             v-model="value" 
-            :keyId="keyId" 
+            :keyId="keyId"
+            :keyName="keyName"
             :options="options" 
             :parentSelectable="true" 
-            :is-view="false" 
-            :is-async="true"
+            :is-view="true" 
+            :is-async="false"
             @cell-click="cellClick"
             @selector-click="loadOptions" 
             @selected-click="getSelectedValue">
@@ -28,10 +29,10 @@
     export default {
         data(){
             return {
-                value: false,
+                value: "000423",
                 options: [],
-                keyId: '000029',
-                keyName: ''
+                keyId: '',
+                keyName: '行政部门\/人事处、人才工作领导小组办公室\/综合科'
             }
         },
         components: {
@@ -40,18 +41,18 @@
         methods:{
             cellClick(){
                 var that = this;
-                // this.options = treeData.datas;
-                utils.Post('http://localhost:8080/emap/sys/emapflow/usergroup/getUsers.do',{}).then(function(res){
-                    console.log(res)
-                },function(err){
-                    console.log(err)
-                    var arr = [{id: "TD_LSDEPT", name: "临时人员", type: "group"},
-                                {id: "4", name: "酱油部2", type: "group"},
-                                {id: "1", name: "云工厂", type: "group"},
-                                {id: "3", name: "行政部", type: "group"},
-                                {id: "1009", name: "王二", type: "user"}]
-                    that.options = that.dataTranslation(arr);
-                })
+                this.options = treeData.datas;
+                // utils.Post('http://localhost:8080/emap/sys/emapflow/usergroup/getUsers.do',{}).then(function(res){
+                //     console.log(res)
+                // },function(err){
+                //     console.log(err)
+                //     var arr = [{id: "TD_LSDEPT", name: "临时人员", type: "group"},
+                //                 {id: "4", name: "酱油部2", type: "group"},
+                //                 {id: "1", name: "云工厂", type: "group"},
+                //                 {id: "3", name: "行政部", type: "group"},
+                //                 {id: "1009", name: "王二", type: "user"}]
+                //     that.options = that.dataTranslation(arr);
+                // })
             },
             loadOptions(id) {
                 var that = this;
@@ -75,6 +76,7 @@
                     }
                     that.options = that.dataTranslation(arr);
                     // that.options = that.options.concat(arr);
+                    // [{id:"111",name:'aaa',isParent:1,pId: "001"}]
                 })
             },
             dataTranslation(arr) {
@@ -112,7 +114,7 @@
             }
         },
         watch:{
-            // 
+            //
         },
         mounted(){
             

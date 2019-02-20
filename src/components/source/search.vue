@@ -54,7 +54,7 @@ export default {
   }
 };
 </script>
-<style lang="css">
+<style lang="css" scoped>
   .tree-search {
     padding: 9px 17px;
     background: #FFFFFF;

@@ -3,7 +3,7 @@
     <span class="tree-breadcrumb-innner" @click.stop="clickHandle(item)">
       <slot>{{item.name}}</slot>
     </span>
-    <svg aria-hidden="true">
+    <svg aria-hidden="true"  class="tree-svg">
       <use xlink:href="#arrow-right"></use>
     </svg>
   </span>

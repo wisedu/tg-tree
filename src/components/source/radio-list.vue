@@ -2,13 +2,13 @@
   <div class="tree-radio-list">
     <tree-cell v-for="(item, index) in treeData" :key="index" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
       <label slot="left" class="icon" for="tree-radio-next" @click.stop="$_checkedClick(item)" v-if="parentSelectable || !item.isParent">
-        <svg aria-hidden="true">
-          <use :xlink:href="currentValue === item.id?'#radio-checked':'#check'"></use>
+        <svg aria-hidden="true" class="tree-svg">
+          <use :xlink:href="currentValue === item.id?'#tree-radio-checked':'#check'"></use>
         </svg>
       </label>
       <div slot="right" id="tree-radio-next" class="tree-radio-next" @click.stop="$_nextClick(item)" v-if="(isAsync&&item.isParent) || (item.children && item.children.length)">
         <label for="icon-text">
-          <svg aria-hidden="true">
+          <svg aria-hidden="true" class="tree-svg">
             <use xlink:href="#tree"></use>
           </svg>
         </label>
@@ -60,7 +60,6 @@ export default {
       this.$emit('input', val)
     },
     options(newOpts) {
-      console.log(newOpts)
       this.treeData = newOpts;
     }
   },
@@ -79,7 +78,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="css" scoped>
   .tree-radio-list {
     -webkit-overflow-scrolling:touch;
   }
@@ -131,5 +130,6 @@ export default {
   }
   .tree-radio-next {
     position: relative;
+    min-width: 72px;
   }
 </style>
