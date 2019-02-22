@@ -1,6 +1,6 @@
 import loadSprite from './load-spirte.js';
 import TgTree from './components/tg-tree.vue';
-const version = "0.0.3";
+const version = "0.0.4";
 const description = "A mobile tree component by Vue";
 const author = "金智教育 wisedu";
 const components = {

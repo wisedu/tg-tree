@@ -7,7 +7,8 @@
       inline ? 'inline' : 'block',
       round ? 'round' : '',
       plain ? 'plain' : ''
-    ]" 
+    ]"
+    :disabled="disabled" 
     @click="handleClick">
       <div class="tree-button-content">
         <slot></slot>
@@ -37,6 +38,10 @@ export default {
       default: false
     },
     round: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -82,8 +87,14 @@ export default {
   .tree-button.round {
     border-radius: 36px;
   }
+  .tree-button.inline {
+    display: inline-block;
+  }
   .tree-button:active::before {
     opacity: 0.35;
+  }
+  .tree-button[disabled] {
+    background-color: #C4C9D9; 
   }
   .tree-button::before {
     content: " ";

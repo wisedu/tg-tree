@@ -2,8 +2,8 @@
   <div class="tree-search">
     <div class="tree-search-wrapper">
       <i class="tree-icon-search">
-        <svg aria-hidden="true">
-          <use xlink:href="#search"></use>
+        <svg class="tree-svg-search tree-svg-color-default" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <path d="M414.5 746C231.6 746 82.9 597.5 82.9 414.3c0-182.7 148.7-331.6 331.6-331.6S746 231.6 746 414.3C746 597.5 597.3 746 414.5 746zM1024 965.3L735.3 676.6c60.7-73.9 93.8-166.7 93.6-262.3C828.9 185.5 643.4 0 414.5 0S0 185.5 0 414.3C0 643.5 185.6 829 414.5 829c99.5 0 190.8-35.4 262.2-93.7L965.4 1024l58.6-58.7z"></path>
         </svg>
       </i>
       <input type="search" v-model="currentValue" ref="tree-search" :placeholder="placeholder" class="tree-search-input" @input="onInput" @blur="onBlur" @focus="onFocus" @keypress="onKeypress">
@@ -86,5 +86,10 @@ export default {
     color: inherit;
     box-sizing: border-box;
     background-color: transparent;
+  }
+  .tree-svg-search {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
   }
 </style>

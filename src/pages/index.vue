@@ -6,7 +6,7 @@
             :keyId="keyId"
             :keyName="keyName"
             :options="options" 
-            :parentSelectable="true" 
+            :parentSelectable="false" 
             :is-view="true" 
             :is-async="false"
             @cell-click="cellClick"
@@ -14,6 +14,18 @@
             @selected-click="getSelectedValue">
         </tg-tree>
         <button @click="initSingleTree">单选树</button>
+        <tg-tree 
+            title="多选树" 
+            v-model="multiValue" 
+            :options="multiOptions" 
+            :parentSelectable="true" 
+            :is-view="true" 
+            :is-async="false"
+            multiple
+            @cell-click="cellClick('multi')"
+            @selector-click="loadOptions" 
+            @selected-click="getSelectedValue">
+        </tg-tree>
     </div>
 </template>
 <style>
@@ -32,16 +44,24 @@
                 value: "000423",
                 options: [],
                 keyId: '',
-                keyName: '行政部门\/人事处、人才工作领导小组办公室\/综合科'
+                keyName: '行政部门\/人事处、人才工作领导小组办公室\/综合科',
+                multiValue: [],
+                multiOptions: []
             }
         },
         components: {
             TgTree
         },
         methods:{
-            cellClick(){
+            cellClick(val){
                 var that = this;
-                this.options = treeData.datas;
+                if(val === 'multi'){
+                    this.multiOptions = treeData.datas;
+                }else{
+                    this.options = treeData.datas;
+                }
+                
+                
                 // utils.Post('http://localhost:8080/emap/sys/emapflow/usergroup/getUsers.do',{}).then(function(res){
                 //     console.log(res)
                 // },function(err){
