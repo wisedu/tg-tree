@@ -22,7 +22,7 @@
             :keyId="customSingleId"
             :keyName="customSingleName"
             :options="customSingleOptions" 
-            :parentSelectable="false" 
+            :parentSelectable="true" 
             :is-view="false" 
             @selected-click="getCustomSingleSelectedValue"
             style="margin-bottom:5px;">
@@ -33,7 +33,7 @@
             v-model="asyncSingleValue" 
             :keyName="asyncSingleName"
             :options="asyncSingleOptions" 
-            :parentSelectable="false" 
+            :parentSelectable="true" 
             :is-view="true"
             :is-async="true" 
             @cell-click="cellClick('asyncSingle')"
@@ -50,7 +50,7 @@
             :keyId="customAsyncSingleId"
             :keyName="customAsyncSingleName"
             :options="customAsyncSingleOptions" 
-            :parentSelectable="false" 
+            :parentSelectable="true" 
             :is-view="false"
             :is-async="true" 
             @selector-click="customAsyncSingleLoadOptions"
@@ -146,8 +146,8 @@
                 asyncSingleOptions: [],
                 // 自定义展示面板 -- 异步单选树数据
                 customAsyncSingleValue: false,
-                customAsyncSingleId: '',
-                customAsyncSingleName: '',
+                customAsyncSingleId: '1009',
+                customAsyncSingleName: '王二',
                 customAsyncSingleOptions: [],
 
                 // 默认展示面板--同步多选树参数

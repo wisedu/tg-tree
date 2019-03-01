@@ -50,7 +50,7 @@
         </tree-checkbox-list>
       </div>
       <div class="tree-button-action" v-if="!multiple">
-        <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_btnClick">取消</tree-button>
+        <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_radioCancel">取消</tree-button>
       </div>
       <div class="tree-button-action" v-if="multiple">
         <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
@@ -92,14 +92,14 @@ export default {
       breadOptions: [
         {name: '全部',id:''}
       ],
-      radioValue: '',
+      radioValue: this.isView?this.value:this.keyId,
       radioOptions: [],
       checkboxValue: [],
       checkboxOptions: [],
       sameLevel: null,  // 用来标识选项是否同属同一级
-      maskShow: this.isView?false:this.value,  // 遮罩
+      maskShow: false,  // 遮罩
       vh: document.documentElement.clientHeight, // 客户端高度
-      checkboxSelectors: [], //多选选中项
+      checkboxSelectors: [], //多选选中项对象
     }
   },
   props: {
@@ -173,10 +173,7 @@ export default {
       // value 值为boolean时，用作遮罩；非boolean用作选中值
       if(typeof val === 'boolean') {
         this.maskShow = val;
-        if(val){
-          if(!this.multiple) this.radioValue = null;
-          this.openMaskAction();
-        }
+        if(val) this.openMaskAction();
       }else{
         if(this.multiple){  //多选
           this.checkboxValue = val;
@@ -299,7 +296,10 @@ export default {
         this.dealWithBread(item);
       }  
     },
-    $_btnClick(e) {
+    /**
+     *  功能说明：单选取消按钮
+     */
+    $_radioCancel(e) {
       this.maskShow = false;
       document.body.classList.remove( 'tree-overflow-hidden');
     },
@@ -378,8 +378,7 @@ export default {
      */
     initial() {
       const treeJson = utils.toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
-      if(!treeJson.length) return;
-      this.breadOptions = [{name: '全部',id:''}];
+      if(!treeJson.length || this.breadOptions.length>1) return;
       this.breadOptions[0].children = treeJson;
       if(this.radioValue == null || this.radioValue === '') {
         this.radioOptions = treeJson;
@@ -456,6 +455,7 @@ export default {
             that.checkboxSelectors.push({"id": id, "name": labels[index]});
           });
         }else{
+          this.radioValue = this.isView?this.value:this.keyId;
           this.sameLevel = null;
         }
       }else{
@@ -483,9 +483,8 @@ export default {
     }
   },
   created() {
-    if(!this.multiple){
-      this.initial();
-    }
+    // 单选模式，created发生时options赋值时适用
+    if(!this.multiple) this.initial();
   },
   destroyed() {
     document.body.classList.remove( 'tree-overflow-hidden');
