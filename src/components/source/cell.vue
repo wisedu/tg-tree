@@ -122,7 +122,7 @@ export default {
     display: flex;
     flex-grow: 1;
   }
-  .tree-cell-content.left {
+  .tree-cell-content {
     margin-left: 19px;
   }
   .tree-cell-content.center {

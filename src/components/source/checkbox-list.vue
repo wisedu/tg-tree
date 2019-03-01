@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     $_checkedClick(item) {
+      if(!this.parentSelectable&&item.isParent) return; // 父级不可选
       var index =  this.currentValue.findIndex(function(key){
         return key === item.id;
       });

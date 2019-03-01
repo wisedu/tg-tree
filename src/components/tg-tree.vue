@@ -10,8 +10,7 @@
       :align="align"
       :solid="solid"
       :arrow="arrow"
-      @click="$_cellClick"
-      style="margin-bottom:5px;">
+      @click="$_cellClick">
       <span v-if="!labelName" class="tree-placeholder">{{placeholder}}</span>
     </tree-cell>
     <div class="tree-mask" v-show="maskShow" :style="[{height: vh + 'px'}]">
@@ -45,14 +44,16 @@
           ref="checkboxList"
           :options="checkboxOptions"
           @item-click="$_itemClick"
-          @next-click="$_nextClick">
+          @next-click="$_nextClick"
+          :is-async="isAsync" 
+          :parent-selectable="parentSelectable">
         </tree-checkbox-list>
       </div>
-      <div class="tree-button-action" v-if="isView && typeof value !== 'boolean' && !multiple">
+      <div class="tree-button-action" v-if="!multiple">
         <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_btnClick">取消</tree-button>
       </div>
       <div class="tree-button-action" v-if="multiple">
-        <tree-selector-footer v-model="checkboxSelectors"></tree-selector-footer>
+        <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
       </div>
     </div>
   </div>
@@ -91,7 +92,7 @@ export default {
       breadOptions: [
         {name: '全部',id:''}
       ],
-      radioValue: this.isView?this.value:(this.isAsync?null:this.keyId),
+      radioValue: '',
       radioOptions: [],
       checkboxValue: [],
       checkboxOptions: [],
@@ -106,7 +107,7 @@ export default {
       type: String,
       default: ''
     },
-    keyId: [String,Number], // 仅作用于isView = false模式下且为同步数据，数据回显
+    keyId: [String,Number,Array], // 仅作用于isView = false模式下且为同步数据，数据回显;Array用于多选模式
     keyName: {
       type: String,
       default: ''
@@ -138,6 +139,7 @@ export default {
     value: {},
     options: {
       type: Array,
+      required: true,
       default: function(){
         return []
       }
@@ -157,6 +159,13 @@ export default {
     multiple: {
       type: Boolean,
       default: false
+    },
+    divider: { //多选分割符
+      type: String,
+      default: ',',
+      validator: function(value){
+        return [',','-','/','%','&','--'].indexOf(value)>-1;
+     }
     }
   },
   watch: {
@@ -165,7 +174,7 @@ export default {
       if(typeof val === 'boolean') {
         this.maskShow = val;
         if(val){
-          this.radioValue = null;
+          if(!this.multiple) this.radioValue = null;
           this.openMaskAction();
         }
       }else{
@@ -187,14 +196,16 @@ export default {
         this.$emit('input',newState)
       }
     },
-    options: function(newOpts) {
+    options: function(newOpts,oldVal) {
       if(this.multiple){  //多选
-        const treeJson = utils.toTreeData(newOpts, '', {ukey:"id", pkey:'pId', toCKey:'children'});
-        this.checkboxOptions = treeJson;
-        this.breadOptions[0].children = treeJson;
+        if(this.isAsync){
+          this.checkboxOptions = newOpts;
+        }else{
+          this.multiInitial();
+        }
       }else{
         if(this.isAsync){ //异步
-          this.radioOptions = this.options;
+          this.radioOptions = newOpts;
         }else{
           this.initial();
         }
@@ -220,7 +231,7 @@ export default {
           var datas = this.breadOptions[index].children;
           this.$refs.checkboxList.treeData = JSON.parse(JSON.stringify(datas));
         }else{
-          
+          this.$emit("selector-click",item.id,item);
         }
       }else{
         this.sameLevel = item.pId;
@@ -248,17 +259,22 @@ export default {
         this.dealWithBread(item);
         this.closeMaskAction(item);
       }else{
-        if(this.isSamelevelCheck(item)) return;
-        this.sameLevel = item.pId;
-        this.dealWithBread(item);
         // 父级不可选模式(parentSelectable = false)
         if(item.isParent === 0) {
           this.closeMaskAction(item);
+        }else{
+          if(this.isSamelevelCheck(item)) return;
+          this.sameLevel = item.pId;
+          this.dealWithBread(item);
         }
       }
     },
+    /**
+     *  功能说明：多选模式下，点击某一单项触发
+     *  @item: 当前点击项
+     *  @index: 标识选中还是取消选中，-1为选中，>=0为取消选中且表示当前项在已选中值this.checkboxValue数组中的下标
+     */
     $_itemClick(item,index){
-      console.log(item,index)
       if(index === -1){
         this.checkboxSelectors.push(item);
       }else{
@@ -268,6 +284,9 @@ export default {
     $_nextClick(item) {
       if(this.multiple){
         if(this.breadOptions[this.breadOptions.length-1].pId === item.pId) this.breadOptions.splice(-1,1,item);
+        if(this.isAsync){
+          this.$emit("selector-click",item.id,item);
+        }
         this.dealWithBread(item);
       }else{
         this.radioValue = null;
@@ -283,6 +302,33 @@ export default {
     $_btnClick(e) {
       this.maskShow = false;
       document.body.classList.remove( 'tree-overflow-hidden');
+    },
+    /**
+     *  功能说明：多选模式下，详情清单中选择项变更变化触发时间
+     *  @opts: 选中项变更后的值，即【this.checkboxSelectors】
+     */
+    $_checkboxSelectorChange(opts) {
+      var selectors = [];
+      opts.forEach(function(opt){
+        selectors.push(opt.id);
+      });
+      this.checkboxValue = selectors;
+    },
+    /**
+     *  功能说明：多选模式下，确认按钮触发事件
+     */
+    $_checkboxSelectorConfirm(){
+      this.maskShow = false;
+      document.body.classList.remove( 'tree-overflow-hidden');
+      var arr = this.checkboxSelectors.map(function(item){
+        return item.name;
+      });
+      arr = arr.join(this.divider);
+      this.labelName = arr;
+      if(this.isView) {
+        this.$emit('input',this.checkboxValue);
+      }
+      this.$emit('selected-click', this.checkboxValue, this.labelName, this.checkboxSelectors);
     },
     /**
      *  功能说明：判断当前选项是否与上一次itemChecked同属同一父级下
@@ -328,21 +374,23 @@ export default {
       })
     },
     /**
-     *  功能说明： 同步options数据初始化
+     *  功能说明： 单选数据初始化
      */
     initial() {
       const treeJson = utils.toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
       if(!treeJson.length) return;
+      this.breadOptions = [{name: '全部',id:''}];
       this.breadOptions[0].children = treeJson;
-      if(this.radioValue == null) {
+      if(this.radioValue == null || this.radioValue === '') {
         this.radioOptions = treeJson;
       }else{
-        // MASK: 利用hash法快速获取选定项
+        // MASK: 利用hash法快速定位选定项
         var hashId = [];
         this.options.forEach(function(obj){
           hashId[obj.id] = obj;
         });
         var radioObj = hashId[this.radioValue];
+        this.labelName = radioObj.name; // 针对options不为空时，复显radioValue的KeyName
         // 判断给定值id是否有效
         if(radioObj){
           var parentIds = [radioObj];
@@ -360,9 +408,38 @@ export default {
       }
     },
     /**
+     *  功能说明： 多选数据初始化
+     */
+    multiInitial() {
+      console.log('multiInitial')
+      const treeJson = utils.toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      if(!treeJson.length) return;
+      this.checkboxOptions = treeJson;
+      this.breadOptions[0].children = treeJson;
+      // 判断是否自定义显示面板
+      if(this.isView){
+        this.checkboxValue = this.value;
+      }else{
+        this.checkboxValue = this.keyId;
+      }
+      var that = this;
+      var hashId = [];
+      this.checkboxSelectors = [];
+      this.options.forEach(function(opt){
+        if(that.checkboxValue.indexOf(opt.id)>-1){
+          hashId[opt.id] = opt
+        }
+      });
+      this.checkboxValue.forEach(function(id){
+        that.checkboxSelectors.push(hashId[id]);
+      });
+      console.log(this.checkboxSelectors)
+    },
+    /**
      *  功能说明： 打开遮罩，处理遮罩问题，初始化面包屑
      */
     openMaskAction(){
+      var that = this;
       // 禁止body滚动
       document.body.classList.add( 'tree-overflow-hidden');
       // 重新计算当前客户端高度
@@ -371,17 +448,30 @@ export default {
       // 异步breadcrumb初始化
       if(this.isAsync) {
         this.breadOptions = [{name: '全部',id:''}];
-        this.sameLevel = null;
-      }else{
-        if(this.options.length){
-          this.breadOptions = [{name: '全部',id:''}];
-          this.radioValue = this.value;
-          this.initial();
+        if(this.multiple) {
+          this.checkboxValue = this.isView?this.value:this.keyId;
+          var labels = this.labelName.split(this.divider);
+          this.checkboxSelectors = [];
+          this.checkboxValue.forEach(function(id,index){
+            that.checkboxSelectors.push({"id": id, "name": labels[index]});
+          });
+        }else{
+          this.sameLevel = null;
         }
+      }else{
+          if(this.options.length){
+            this.breadOptions = [{name: '全部',id:''}];
+            if(this.multiple){
+              this.multiInitial();
+            }else{
+              this.radioValue = this.isView?this.value:this.keyId;
+              this.initial();
+            }
+          }
       }
     },
     /**
-     *  功能说明： 关闭遮罩选择层，去除body禁用样式，处理外抛或外部显示数据
+     *  功能说明： 单选--关闭遮罩选择层，去除body禁用样式，处理外抛或外部显示数据
      *   @item: 当前选中项
      */
     closeMaskAction(item){
@@ -393,7 +483,9 @@ export default {
     }
   },
   created() {
-    this.initial();
+    if(!this.multiple){
+      this.initial();
+    }
   },
   destroyed() {
     document.body.classList.remove( 'tree-overflow-hidden');

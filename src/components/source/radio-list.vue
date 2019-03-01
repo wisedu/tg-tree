@@ -1,6 +1,6 @@
 <template>
   <div class="tree-radio-list">
-    <tree-cell v-for="(item, index) in treeData" :key="index" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
+    <tree-cell v-for="(item, index) in treeData" :key="item.id" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
       <label slot="left" class="icon" for="tree-radio-next" @click.stop="$_checkedClick(item)" v-if="parentSelectable || !item.isParent">
         <svg aria-hidden="true" class="tree-svg">
           <use :xlink:href="currentValue === item.id?'#tree-radio-checked':'#check'"></use>
