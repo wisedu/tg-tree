@@ -43,13 +43,13 @@ let config = merge(webpackBaseConfig, {
         // new ExtractTextPlugin({filename: 'style/' + process.env.COLOR_THEME + '/emap.css', allChunks: true}),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+                warnings: false
+            }
         })
-        // new webpack.optimize.UglifyJsPlugin({
-        //     sourceMap: true,
-        //     compress: {
-        //         warnings: false
-        //     }
-        // })
     ],
     devtool: 'source-map'
 });
