@@ -57,15 +57,13 @@ components.forEach(item => {
 });
 
 let template = 
-`import loadSprite from './load-spirte.js';
-${jsImport.join("\r\n")}
+`${jsImport.join("\r\n")}
 const version = "${packageJSON.version}";
 const description = "${packageJSON.description}";
 const author = "${packageJSON.author}";
 const components = {
     ${jsClass.join(",")}
 };
-loadSprite();
 const install = function (Vue, opts = {}) {
     if (install.installed) return;
     Object.keys(components).forEach((key) => {

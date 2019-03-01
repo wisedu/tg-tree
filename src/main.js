@@ -3,10 +3,6 @@ import VueRouter from 'vue-router';
 import App from './app.vue';
 import route from './router';
 import * as utils from './components/source/utils'
-import loadSprite from './load-spirte'
-
-loadSprite();
-
 
 Vue.use(VueRouter);
 const router = new VueRouter(route);
