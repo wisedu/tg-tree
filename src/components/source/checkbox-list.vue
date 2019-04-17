@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       currentValue: this.value,
-      treeData: []
+      treeData: this.options
     }
   },
   watch: {
@@ -62,7 +62,7 @@ export default {
     currentValue(val) {
       this.$emit('input', val)
     },
-    options(newOpts) {
+    options(newOpts, oldOpts) {
       this.treeData = newOpts;
     }
   },

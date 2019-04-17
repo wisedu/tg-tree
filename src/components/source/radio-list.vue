@@ -62,7 +62,7 @@ export default {
     currentValue(val) {
       this.$emit('input', val)
     },
-    options(newOpts) {
+    options(newOpts, oldOpts) {
       this.treeData = newOpts;
     }
   },

@@ -1,6 +1,13 @@
 <template>
     <div class="tree-demo">
         <p>单选树</p>
+        <tg-tree 
+            title="标题" 
+            v-model="demoValue"
+            :options="demoData"
+            :parentSelectable="true"
+            style="margin-bottom:5px;">
+        </tg-tree>
     <!-- 同步单选树 -->
         <tg-tree 
             title="单选树" 
@@ -23,7 +30,7 @@
             :keyName="customSingleName"
             :options="customSingleOptions" 
             :parentSelectable="true" 
-            :is-view="false" 
+            :is-view="false"
             @selected-click="getCustomSingleSelectedValue"
             style="margin-bottom:5px;">
         </tg-tree>
@@ -32,12 +39,15 @@
             title="异步单选树" 
             v-model="asyncSingleValue" 
             :keyName="asyncSingleName"
-            :options="asyncSingleOptions" 
+            :options="asyncSingleOptions"
+            :searchOptions="searchOptions"
             :parentSelectable="true" 
             :is-view="true"
-            :is-async="true" 
+            :is-async="true"
+            hasSearch  
             @cell-click="cellClick('asyncSingle')"
             @selector-click="asyncSingleLoadOptions"
+            @on-search="searchHandle"
             @selected-click="getAsyncSingleSelectedValue"
             style="margin-bottom:5px;">
         </tg-tree>
@@ -89,11 +99,14 @@
             title="异步多选树" 
             v-model="asyncMultiValue"
             :keyName="asyncMultiKeyName" 
-            :options="asyncMultiOptions" 
+            :options="asyncMultiOptions"
+            :searchOptions="searchOptions" 
             :parentSelectable="true" 
             :is-view="true"
             :is-async="true" 
             multiple
+            hasSearch
+            @on-search="searchHandle"
             @cell-click="cellClick('asyncMulti')"
             @selector-click="asyncMultiLoadOptions"
             style="margin-bottom:5px;">
@@ -131,23 +144,26 @@
     export default {
         data(){
             return {
+                demoValue: '',
+                demoData: treeData.datas,
                 // 默认展示面板 -- 同步单选树参数
                 value: "000423",
                 keyName: '行政部门\/人事处、人才工作领导小组办公室\/综合科',
                 options: [],//treeData.datas,
                 // 自定义展示面板 -- 同步单选树参数
                 customSingleValue: false,
-                customSingleId: '000423',
-                customSingleName: '行政部门\/人事处、人才工作领导小组办公室\/综合科',
+                customSingleId: '',//''
+                customSingleName: '',//''
                 customSingleOptions: [], //treeData.datas,
                 // 异步单选树
-                asyncSingleValue: '1002',//''
-                asyncSingleName: '虚拟人2',//''
+                asyncSingleValue: '',//'1002'
+                asyncSingleName: '',//'虚拟人2'
                 asyncSingleOptions: [],
+                searchOptions: [],
                 // 自定义展示面板 -- 异步单选树数据
                 customAsyncSingleValue: false,
-                customAsyncSingleId: '1009',
-                customAsyncSingleName: '王二',
+                customAsyncSingleId: '',
+                customAsyncSingleName: '',
                 customAsyncSingleOptions: [],
 
                 // 默认展示面板--同步多选树参数
@@ -208,6 +224,15 @@
             /************************* Ⅰ· 同步-单选 END ****************************/
 
             /************************* Ⅱ· 异步-单选 END ****************************/
+            searchHandle(keyword) {
+                console.log(keyword)
+                // this.searchOptions = [{id: "1001", superId: "01548998", name: "虚拟人1", type: "user"},
+                //                 {id: "1002", superId: "01548998", name: "虚拟人2", type: "user"},
+                //                 {id: "1003", superId: "01548998", name: "虚拟人3", type: "user"},
+                //                 {id: "1004", superId: "01548998", name: "虚拟人4", type: "user"},
+                //                 {id: "1005", superId: "01548998", name: "虚拟人5", type: "user"},
+                //                 {id: "1009", name: "王二", type: "user"}]
+            },
             // 【isView=true】【单选】【异步】模式下，异步加载数据
             asyncSingleLoadOptions(id){
                 var that = this;
@@ -360,7 +385,7 @@
     }
 </script>
 <style>
-    .tree-demo p {
+    .tree-demo>p {
         font-size: 12px;
         color: #C4C9D9;
         background: #EDF2FB;
