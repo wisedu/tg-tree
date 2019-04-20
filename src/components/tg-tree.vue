@@ -301,7 +301,7 @@ export default {
     },
     $_searchChange(value,e) {
       if(value) {
-        this.$emit("on-search",value);
+        // this.$emit("on-search",value);
       }else{
         this.searchList = []
       }
