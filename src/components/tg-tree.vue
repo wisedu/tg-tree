@@ -36,6 +36,7 @@
             v-if="multiple"
             v-model="checkboxValue" 
             :options="searchList"
+            :disabled-options="disabledOptions" 
             @item-click="$_searchItemChecked">
           </tree-checkbox-list>
           <div class="tree-search-nodata" v-if="searchResult&&!searchList.length">
