@@ -1,9 +1,16 @@
 <template>
   <div class="tree-checkbox-list">
-    <tree-cell v-for="(item, index) in treeData" :key="index" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
+    <tree-cell 
+      v-for="(item, index) in treeData" 
+      :key="index" 
+      :title="item.name" 
+      @on-label-click="$_checkedClick(item)" 
+      align="default" 
+      :disabled="disabledOptions.indexOf(item.id)>-1"
+      :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
       <label slot="left" class="icon" for="tree-checkbox-next" @click.stop="$_checkedClick(item)" v-if="parentSelectable || !item.isParent">
         <svg class="tree-svg" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" v-if="currentValue.indexOf(item.id) >-1">
-          <path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#3B7BFF"></path><path d="M512.8 645.7l184.9-320.2c7.7-13.7 25-18.6 38.7-11 13.7 7.7 18.6 25 11 38.7-0.1 0.2-0.3 0.5-0.4 0.7L547.8 698.8c-7.9 13.6-25.3 18.3-38.9 10.4l-221.7-128c-13.6-7.9-18.3-25.2-10.4-38.9 7.9-13.6 25.2-18.3 38.9-10.4l197.1 113.8z" fill="#FFFFFF"></path>
+          <path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" :fill="disabledOptions.indexOf(item.id)>-1?'#C4C9D9':'#3B7BFF'"></path><path d="M512.8 645.7l184.9-320.2c7.7-13.7 25-18.6 38.7-11 13.7 7.7 18.6 25 11 38.7-0.1 0.2-0.3 0.5-0.4 0.7L547.8 698.8c-7.9 13.6-25.3 18.3-38.9 10.4l-221.7-128c-13.6-7.9-18.3-25.2-10.4-38.9 7.9-13.6 25.2-18.3 38.9-10.4l197.1 113.8z" fill="#FFFFFF"></path>
         </svg>
         <svg class="tree-svg" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" v-else>
           <path d="M512 972.8C257.9 972.8 51.2 766.1 51.2 512 51.2 257.9 257.9 51.2 512 51.2c254.1 0 460.8 206.7 460.8 460.8 0 254.1-206.7 460.8-460.8 460.8z m0-870.4c-225.9 0-409.6 183.8-409.6 409.6S286.1 921.6 512 921.6 921.6 737.8 921.6 512 737.8 102.4 512 102.4z" fill="#C4C9D9"></path>
@@ -47,6 +54,12 @@ export default {
     iconText: {
       type: String,
       default: '下级'
+    },
+    disabledOptions: {
+      type: Array,
+      default: function() {
+        return []
+      }
     }
   },
   data() {
@@ -69,6 +82,7 @@ export default {
   methods: {
     $_checkedClick(item) {
       if(!this.parentSelectable&&item.isParent) return; // 父级不可选
+      if(this.disabledOptions.indexOf(item.id)>-1) return;
       var index =  this.currentValue.findIndex(function(key){
         return key === item.id;
       });

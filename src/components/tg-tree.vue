@@ -69,7 +69,8 @@
             :options="checkboxOptions"
             @item-click="$_itemClick"
             @next-click="$_nextClick"
-            :is-async="isAsync" 
+            :is-async="isAsync"
+            :disabled-options="disabledOptions" 
             :parent-selectable="parentSelectable">
           </tree-checkbox-list>
         </div>
@@ -78,7 +79,7 @@
         <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_radioCancel">取消</tree-button>
       </div>
       <div class="tree-button-action" v-if="multiple || (multiple && searchResult)">
-        <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
+        <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" :disabled-options="disabledOptions" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
       </div>
     </div>
   </div>
@@ -173,6 +174,12 @@ export default {
       type: Array,
       required: true,
       default: function(){
+        return []
+      }
+    },
+    disabledOptions: {
+      type: Array,
+      default: function() {
         return []
       }
     },

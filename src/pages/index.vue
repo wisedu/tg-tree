@@ -59,7 +59,8 @@
             v-model="customAsyncSingleValue" 
             :keyId="customAsyncSingleId"
             :keyName="customAsyncSingleName"
-            :options="customAsyncSingleOptions" 
+            :options="customAsyncSingleOptions"
+            :searchOptions="searchOptions" 
             :parentSelectable="true" 
             :is-view="false"
             :is-async="true" 
@@ -120,10 +121,12 @@
             :keyId="customAsyncMultiIds"
             :keyName="customAsyncMultiName" 
             :options="customAsyncMultiOptions" 
-            :parentSelectable="true" 
+            :parentSelectable="false" 
             :is-view="false"
+            :disabledOptions="disabledOptions"
             :is-async="true"
             multiple
+            hasSearch
             @selector-click="customAsyncMultiLoadOptions"
             @selected-click="getCustomAsyncMultiSelectedValue"
             style="margin-bottom:5px;">
@@ -184,6 +187,7 @@
                 customAsyncMultiIds: ["1009","user1","1002"],
                 customAsyncMultiName: '王二,导入姓名4,虚拟人2',
                 customAsyncMultiOptions: [],
+                disabledOptions: ["1009","user1"]
             }
         },
         components: {
@@ -324,6 +328,7 @@
                                 {id: "3", name: "行政部", type: "group"},
                                 {id: "1009", name: "王二", type: "user"}]
                     arr = that.dataTranslation(arr);
+                    console.log(arr)
                     return arr;
                 })
                 return result;
