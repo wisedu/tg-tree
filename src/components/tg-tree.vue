@@ -215,11 +215,14 @@ export default {
         if(val) this.openMaskAction();
       }else{
         if(this.multiple){  //多选
-          this.checkboxValue = val;
+          this.checkboxValue = val
         }else{
-          this.radioValue = val;
+          this.radioValue = val
         }
       }
+    },
+    keyName: function(value) {
+      this.labelName = value
     },
     radioValue: function(newVal) {
       // 注：newval == null,即非选中状态，不改变value值
@@ -232,6 +235,7 @@ export default {
         this.$emit('input',newState)
       }
     },
+
     options: function(newOpts,oldVal) {
       if(this.multiple){  //多选
         if(this.isAsync){
