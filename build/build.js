@@ -74,7 +74,7 @@ const install = function (Vue, opts = {}) {
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue);
 }
-export { version, description, author}
+export { version, description, author, ${jsClass.join(",")}}
 export default Object.assign({}, {install, ...components});`
 
 fs.writeFileSync(OUTPUT_PATH, template);

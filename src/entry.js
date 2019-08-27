@@ -1,5 +1,5 @@
 import TgTree from './components/tg-tree.vue';
-const version = "0.0.9";
+const version = "0.0.11";
 const description = "A mobile tree component by Vue";
 const author = "金智教育 wisedu";
 const components = {
@@ -15,5 +15,5 @@ const install = function (Vue, opts = {}) {
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue);
 }
-export { version, description, author}
+export { version, description, author, TgTree}
 export default Object.assign({}, {install, ...components});

@@ -26,6 +26,7 @@
         </tree-cell>
         <tg-tree 
             v-model="customSingleValue" 
+            hasSearch
             :keyId="customSingleId"
             :keyName="customSingleName"
             :options="customSingleOptions" 
@@ -165,8 +166,8 @@
                 searchOptions: [],
                 // 自定义展示面板 -- 异步单选树数据
                 customAsyncSingleValue: false,
-                customAsyncSingleId: '',
-                customAsyncSingleName: '',
+                customAsyncSingleId: '1009',
+                customAsyncSingleName: '王二',
                 customAsyncSingleOptions: [],
 
                 // 默认展示面板--同步多选树参数
@@ -318,7 +319,7 @@
             async getAsyncOptions() {
                 var that = this;
                 var result = [];
-                result = utils.Post('http://localhost:8080/emap/sys/emapflow/usergroup/getUsers.do',{}).then(function(res){
+                result = utils.Post('http://localhost:8090/emap/sys/emapflow/usergroup/getUsers.do',{}).then(function(res){
                     console.log(res)
                 },function(err){
                     console.log(err)
@@ -337,7 +338,7 @@
             async getAsyncOptionsByid(id){
                 var that = this;
                 var result = [];
-                result = utils.Post('http://localhost:8080/emap/sys/emapflow/usergroup/getUsers.do',{'searchKey':id}).then(function(res){
+                result = utils.Post('http://localhost:8090/emap/sys/emapflow/usergroup/getUsers.do',{'searchKey':id}).then(function(res){
                     console.log(res)
                 },function(err){
                     console.log(err)

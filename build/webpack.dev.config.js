@@ -15,7 +15,7 @@ module.exports = merge(webpackBaseConfig, {
     historyApiFallback: true,
     noInfo: true,
     host: require('my-local-ip')(),
-    port: 8082,
+    port: 8090,
     proxy: {
       '/emap/sys/student_app1.2/*default/index.do': {
         bypass: function(req, res, proxyOptions) {

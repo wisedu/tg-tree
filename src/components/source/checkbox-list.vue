@@ -83,8 +83,9 @@ export default {
     $_checkedClick(item) {
       if(!this.parentSelectable&&item.isParent) return; // 父级不可选
       if(this.disabledOptions.indexOf(item.id)>-1) return;
-      var index =  this.currentValue.findIndex(function(key){
-        return key === item.id;
+      var index =  -1;
+      this.currentValue.forEach(function(key,idx){
+        if(key === item.id) index = idx;
       });
       if(index === -1){
         this.currentValue.push(item.id);
