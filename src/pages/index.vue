@@ -141,7 +141,7 @@
 </style>
 
 <script type="text/javascript">
-    import utils from '../components/source/utils'
+    import utils from './http'
     import TgTree from '../components/tg-tree.vue'
     import TreeCell from '../components/source/cell.vue'
     import treeData from "../../mock/tree";
