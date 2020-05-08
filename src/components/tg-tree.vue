@@ -260,14 +260,14 @@ export default {
     }
   },
   computed: {
-    ctxHeight: function() {
+    ctxHeight() {
       var h = this.vh - 105;
       if(this.hasSearch && this.isAsync) {
         h = this.vh - 155;
       }
       return h;
     },
-    searchHeight: function() {
+    searchHeight() {
       var h = this.vh - 50;
       if(this.multiple) {
         h = this.vh -100;

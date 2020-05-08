@@ -1,6 +1,4 @@
-import 'core-js/features/promise';
 import axios from 'axios'
-import moment from 'moment'
 
 const UA = navigator.userAgent.toLowerCase()
 
@@ -22,12 +20,8 @@ function serialize(data) {
   }
 }
 
-// function getApi (name) {
-//   return api[name] || name
-// }
 let utils = {
-  axios:axios,
-  moment:moment
+  axios:axios
 };
 
 /**

@@ -7,7 +7,7 @@
   "packageName": "tg-tree",
   "main": "dist/tg-tree.min.js",
   "scripts": {
-    "dev": "npm run buildcss && cross-env NODE_ENV=development webpack-dev-server --open --inline --hot --config build/webpack.dev.config.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot --config build/webpack.dev.config.js",
     "build": "node ./build/build.js && cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "deploy": "rm -rf dist && node ./build/deploy.js",
     "buildcss": "node ./build/buildcss.js"

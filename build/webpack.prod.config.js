@@ -1,15 +1,15 @@
-var path = require('path');
-var webpack = require('webpack');
-var merge = require('webpack-merge');
-var webpackBaseConfig = require('./webpack.base.config.js');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const webpackBaseConfig = require('./webpack.base.config.js');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var fs = require('fs');
-var file = "./package.json";
-var packageJSON = JSON.parse(fs.readFileSync(file));
+const fs = require('fs');
+const file = "./package.json";
+const packageJSON = JSON.parse(fs.readFileSync(file));
 
-var themeFile = fs.readFileSync('./runtime/theme.css', 'utf-8');
-var match = themeFile.match(/^\/\*COLOR_THEME:([^\*]+)\*\//);
+const themeFile = fs.readFileSync('./runtime/theme.css', 'utf-8');
+let match = themeFile.match(/^\/\*COLOR_THEME:([^\*]+)\*\//);
 if (match.length > 1) {
   process.env.COLOR_THEME = match[1];
 }

@@ -5,11 +5,11 @@
 }
 
 body {
-    height: 100vh;
-    background-color: #EDF2FB;
-    font-family: ZhiFont, ".SFNSText-Regular", "Helvetica Neue", Roboto, "Segoe UI", sans-serif;;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+  height: 100vh;
+  background-color: #EDF2FB;
+  font-family: ZhiFont, ".SFNSText-Regular", "Helvetica Neue", Roboto, "Segoe UI", sans-serif;;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 input:focus {
