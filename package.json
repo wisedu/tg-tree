@@ -13,7 +13,7 @@
     "buildcss": "node ./build/buildcss.js"
   },
   "dependencies": {
-    "axios": "^0.16.1",
+    "axios": "^0.18.1",
     "babel-runtime": "^6.23.0",
     "core-js": "3.0.0-beta.3",
     "es6-promise": "^4.2.8",
