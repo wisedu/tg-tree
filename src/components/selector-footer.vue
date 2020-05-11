@@ -90,7 +90,7 @@ export default {
       this.popupVisible = false;
     },
     $_toolbarConfirm: function(){
-      var result = JSON.parse(JSON.stringify(this.currentValue));
+      let result = JSON.parse(JSON.stringify(this.currentValue));
       result = result.filter(function(item){
         return !item.unchecked
       });

@@ -13,7 +13,8 @@
       @click="$_cellClick">
       <span v-if="!labelName" class="tree-placeholder">{{placeholder}}</span>
     </tree-cell>
-    <div class="tree-mask" v-show="maskShow" :style="[{height: vh + 'px'}]">
+<!--     <div class="tree-mask" v-show="maskShow" :style="[{height: vh + 'px'}]"> -->
+    <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
       <!-- search搜索框 -->
       <tree-search 
         v-if="hasSearch && isAsync" 
@@ -82,20 +83,22 @@
       <div class="tree-button-action" v-if="multiple || (multiple && searchResult)">
         <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" :disabled-options="disabledOptions" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
       </div>
-    </div>
+    </tree-popup>
+<!--     </div> -->
   </div>
 </template>
 
 <script>
-import utils from './source/utils';
-import TreeSearch from './source/search';
-import TreeBreadcrumb from './source/breadcrumb';
-import TreeBreadcrumbItem from './source/breadcrumb-item';
-import TreeCell from './source/cell';
-import TreeRadioList from './source/radio-list';
-import TreeCheckboxList from './source/checkbox-list';
-import TreeButton from './source/button';
-import TreeSelectorFooter from './source/selector-footer';
+import { toTreeData } from 'utils'
+import TreeSearch from './components/search'
+import TreeBreadcrumb from './components/breadcrumb'
+import TreeBreadcrumbItem from './components/breadcrumb-item'
+import TreeCell from './components/cell'
+import TreeRadioList from './components/radio-list'
+import TreeCheckboxList from './components/checkbox-list'
+import TreeButton from './components/button'
+import TreeSelectorFooter from './components/selector-footer'
+import TreePopup from './components/popup'
 
 
 export default {
@@ -108,7 +111,8 @@ export default {
     [TreeRadioList.name]: TreeRadioList,
     [TreeCheckboxList.name]: TreeCheckboxList,
     [TreeButton.name]: TreeButton,
-    [TreeSelectorFooter.name]: TreeSelectorFooter
+    [TreeSelectorFooter.name]: TreeSelectorFooter,
+    [TreePopup.name]: TreePopup
   },
   data(){
     return {
@@ -261,14 +265,14 @@ export default {
   },
   computed: {
     ctxHeight() {
-      var h = this.vh - 105;
+      let h = this.vh - 105;
       if(this.hasSearch && this.isAsync) {
         h = this.vh - 155;
       }
       return h;
     },
     searchHeight() {
-      var h = this.vh - 50;
+      let h = this.vh - 50;
       if(this.multiple) {
         h = this.vh -100;
       }
@@ -288,7 +292,7 @@ export default {
         this.breadOptions.splice(index+1);
         if(!this.isAsync){
           // 同步数据,bread切换，breadOptions数据取自options.children
-          var datas = this.breadOptions[index].children;
+          let datas = this.breadOptions[index].children;
           this.$refs.checkboxList.treeData = JSON.parse(JSON.stringify(datas));
         }else{
           this.$emit("selector-click",item.id,item);
@@ -300,7 +304,7 @@ export default {
         this.radioValue = null;
         if(!this.isAsync){
           // 同步数据,bread切换，breadOptions数据取自options.children
-          var datas = index>0?this.breadOptions[index-1].children:this.breadOptions[0].children;
+          let datas = index>0?this.breadOptions[index-1].children:this.breadOptions[0].children;
           this.$refs.radioList.treeData = JSON.parse(JSON.stringify(datas));
         }else{
           this.$emit("selector-click",item.pId?item.pId:'',item);
@@ -391,7 +395,7 @@ export default {
      *  @opts: 选中项变更后的值，即【this.checkboxSelectors】
      */
     $_checkboxSelectorChange(opts) {
-      var selectors = [];
+      let selectors = [];
       opts.forEach(function(opt){
         selectors.push(opt.id);
       });
@@ -405,7 +409,7 @@ export default {
       this.searchResult = '';//清空搜索
       this.maskShow = false;
       document.body.classList.remove( 'tree-overflow-hidden');
-      var arr = this.checkboxSelectors.map(function(item){
+      let arr = this.checkboxSelectors.map(function(item){
         return item.name;
       });
       arr = arr.join(this.divider);
@@ -431,11 +435,11 @@ export default {
      *  @item: 当前选项对象
      */
     dealWithBread(item) {
-      var ids = [];
+      let ids = [];
       this.breadOptions.forEach(function(option){
         ids.push(option.id);
       });
-      var idx = ids.indexOf(item.id);
+      let idx = ids.indexOf(item.id);
       if(idx === -1) {
         this.breadOptions.push(item);
       }
@@ -446,14 +450,14 @@ export default {
      */
     updateBreadcrumbScroll() {
       this.$nextTick(function(){
-        var breadcrumbVM = this.$refs.breadcrumb;
-        const track = this.$el.querySelector('.tree-breadcrumb-track');
-        var boxWidth = window.getComputedStyle(breadcrumbVM.$el).width;
+        let breadcrumbVM = this.$refs.breadcrumb;
+        const track = this.$refs.popup.$el.querySelector('.tree-breadcrumb-track');
+        let boxWidth = window.getComputedStyle(breadcrumbVM.$el).width;
           boxWidth = Number(boxWidth.slice(0,-2));
-        var trackWidth = window.getComputedStyle(track).width;
+        let trackWidth = window.getComputedStyle(track).width;
         trackWidth = Number(trackWidth.slice(0,-2));
         if(trackWidth > boxWidth) {
-          var extra = trackWidth - boxWidth;
+          let extra = trackWidth - boxWidth;
           breadcrumbVM.$el.scrollLeft = extra;
         }
       })
@@ -462,23 +466,23 @@ export default {
      *  功能说明： 单选数据初始化
      */
     initial() {
-      const treeJson = utils.toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      const treeJson = toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
       if(!treeJson.length || this.breadOptions.length>1) return;
       this.breadOptions[0].children = treeJson;
       if(this.radioValue == null || this.radioValue === '') {
         this.radioOptions = treeJson;
       }else{
         // MASK: 利用hash法快速定位选定项
-        var hashId = [];
+        let hashId = [];
         this.options.forEach(function(obj){
           hashId[obj.id] = obj;
         });
-        var radioObj = hashId[this.radioValue];
+        let radioObj = hashId[this.radioValue];
         this.labelName = radioObj.name; // 针对options不为空时，复显radioValue的KeyName
         // 判断给定值id是否有效
         if(radioObj){
-          var parentIds = [radioObj];
-          var pId = radioObj.pId;
+          let parentIds = [radioObj];
+          let pId = radioObj.pId;
           while(pId !== ''){
             parentIds.push(hashId[pId]);
             pId = hashId[pId].pId;
@@ -495,8 +499,7 @@ export default {
      *  功能说明： 多选数据初始化
      */
     multiInitial() {
-      console.log('multiInitial')
-      const treeJson = utils.toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      const treeJson = toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
       if(!treeJson.length) return;
       this.checkboxOptions = treeJson;
       this.breadOptions[0].children = treeJson;
@@ -506,8 +509,8 @@ export default {
       }else{
         this.checkboxValue = this.keyId;
       }
-      var that = this;
-      var hashId = [];
+      const that = this;
+      let hashId = [];
       this.checkboxSelectors = [];
       this.options.forEach(function(opt){
         if(that.checkboxValue.indexOf(opt.id)>-1){
@@ -517,24 +520,23 @@ export default {
       this.checkboxValue.forEach(function(id){
         that.checkboxSelectors.push(hashId[id]);
       });
-      console.log(this.checkboxSelectors)
     },
     /**
      *  功能说明： 打开遮罩，处理遮罩问题，初始化面包屑
      */
     openMaskAction(){
-      var that = this;
+      const that = this;
       // 禁止body滚动
       document.body.classList.add( 'tree-overflow-hidden');
       // 重新计算当前客户端高度
-      var clientHeight = document.documentElement.clientHeight;
+      let clientHeight = document.documentElement.clientHeight;
       this.vh = this.vh>clientHeight?this.vh:clientHeight;
       // 异步breadcrumb初始化
       if(this.isAsync) {
         this.breadOptions = [{name: '全部',id:''}];
         if(this.multiple) {
           this.checkboxValue = this.isView?this.value:this.keyId;
-          var labels = this.labelName.split(this.divider);
+          let labels = this.labelName.split(this.divider);
           this.checkboxSelectors = [];
           this.checkboxValue.forEach(function(id,index){
             that.checkboxSelectors.push({"id": id, "name": labels[index]});
@@ -579,14 +581,6 @@ export default {
 <style lang="css">
   .tree-breadcrumb {
     margin-bottom: 5px;
-  }
-  .tree-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #EDF2FB;
-    z-index: 999;
   }
   .tree-overflow-hidden {
     overflow: hidden !important;

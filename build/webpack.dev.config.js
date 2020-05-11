@@ -1,10 +1,10 @@
-var path = require('path')
-var webpack = require('webpack')
-var merge = require('webpack-merge');
-var webpackBaseConfig = require('./webpack.base.config.js');
+const path = require('path')
+const webpack = require('webpack')
+const merge = require('webpack-merge');
+const webpackBaseConfig = require('./webpack.base.config.js');
 
 module.exports = merge(webpackBaseConfig, {
-  entry: './src/main.js',
+  entry: './example/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
@@ -15,18 +15,7 @@ module.exports = merge(webpackBaseConfig, {
     historyApiFallback: true,
     noInfo: true,
     host: require('my-local-ip')(),
-    port: 8090,
-    proxy: {
-      '/emap/sys/student_app1.2/*default/index.do': {
-        bypass: function(req, res, proxyOptions) {
-          if (req.url.indexOf('index.do') > -1) {
-            return '/index.html'
-          } else {
-            return req.url.replace('/emap/sys/student_app1.2/*default', '')
-          }
-        }
-      } 
-    }
+    port: 8090
   },
   performance: {
     hints: false
@@ -40,10 +29,8 @@ if (process.env.NODE_ENV === 'production') {
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"',
-        COLOR_THEME: '"blue"'
-      },
-      "WEBPACK_CONIFG_HOST": 'location.origin + location.pathname.substring(0, location.pathname.indexOf("/", 1)) + "/"'
+        NODE_ENV: '"production"'
+      }
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
@@ -60,8 +47,7 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"'
-      },
-      "WEBPACK_CONIFG_HOST": '"http://amptest.wisedu.com/xsfwfw/"'
+      }
     })
   ])
 }

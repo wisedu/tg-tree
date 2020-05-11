@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config.js');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const fs = require('fs');
 const file = "./package.json";
@@ -45,26 +44,5 @@ let config = merge(webpackBaseConfig, {
   ],
   devtool: 'source-map'
 });
-
-config.module = {
-  rules: [{
-    test: /\.vue$/,
-    loader: 'vue-loader',
-  },
-  {
-    test: /\.js$/,
-    loader: 'babel-loader',
-    exclude: /node_modules/
-  },
-  {
-    test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-    loader: 'url-loader?limit=8192'
-  },
-  {
-    test: /\.(html|tpl)$/,
-    loader: 'html-loader'
-  }
-  ]
-}
 
 module.exports = config;

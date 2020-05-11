@@ -1,8 +1,8 @@
 /**
  * 公共配置
  */
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
@@ -12,18 +12,8 @@ module.exports = {
   // 加载器
   module: {
     rules: [{
-        // https://vue-loader.vuejs.org/en/configurations/extract-css.html
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            css: ['vue-style-loader', 'css-loader',{ loader: 'postcss-loader', options: { sourceMap: 'inline' } }],
-            postcss: ['vue-style-loader', 'css-loader', { loader: 'postcss-loader', options: { sourceMap: 'inline' } }]
-          },
-          postLoaders: {
-            html: 'babel-loader'
-          }
-        }
+        loader: 'vue-loader'
       },
       {
         test: /\.js$/,
@@ -38,12 +28,16 @@ module.exports = {
           options: {
             sourceMap: 'inline'
           }
-        },
-        'autoprefixer-loader']
+        }]
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        loader: 'url-loader?limit=8192'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 8192,
+          }
+        }]
       },
       {
         test: /\.(html|tpl)$/,
@@ -51,16 +45,22 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     modules: [
       'src',
+      'mock',
       'node_modules'
     ],
     alias: {
       'vue': 'vue/dist/vue.esm.js',
       'vue$': 'vue/dist/vue.common.js',
-      '@': resolve('src')
+      'src': resolve('src'),
+      'utils': resolve('src/utils'),
+      'mock': resolve('mock')
     }
   }
 };

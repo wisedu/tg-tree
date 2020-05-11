@@ -17,12 +17,12 @@ export default {
   },
   mounted() {
     const track = this.$el.querySelector('.tree-breadcrumb-track');
-    var boxWidth = window.getComputedStyle(this.$el).width;
+    let boxWidth = window.getComputedStyle(this.$el).width;
       boxWidth = Number(boxWidth.slice(0,-2));
-    var trackWidth = window.getComputedStyle(track).width;
+    let trackWidth = window.getComputedStyle(track).width;
     trackWidth = Number(trackWidth.slice(0,-2));
     if(trackWidth > boxWidth) {
-      var extra = trackWidth - boxWidth;
+      let extra = trackWidth - boxWidth;
       this.$el.scrollLeft = extra;
     }
   }

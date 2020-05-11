@@ -26,7 +26,7 @@
     },
     methods: {
       clickHandle(item){
-        var index = this.$el.getAttribute('data-index');
+        let index = this.$el.getAttribute('data-index');
         this.$emit('bread-click',item,Number(index));
       }
     },
