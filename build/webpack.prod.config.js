@@ -7,9 +7,6 @@ const fs = require('fs');
 const file = "./package.json";
 const packageJSON = JSON.parse(fs.readFileSync(file));
 
-process.env.NODE_ENV = 'production';
-
-
 let config = merge(webpackBaseConfig, {
   entry: {
     main: './src/entry.js'
