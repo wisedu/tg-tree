@@ -11,12 +11,11 @@
     "build": "node ./build/build.js && webpack --progress --hide-modules --config build/webpack.prod.config.js"
   },
   "dependencies": {
-    "vue": "^2.6.11",
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
-    "axios": "^0.19.2",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
     "es6-promise": "^4.2.8",
@@ -38,6 +37,7 @@
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "axios": "^0.19.2"
   }
 }

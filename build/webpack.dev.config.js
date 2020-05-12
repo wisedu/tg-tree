@@ -15,11 +15,16 @@ module.exports = merge(webpackBaseConfig, {
     disableHostCheck: true,
     historyApiFallback: true,
     hot: true,
-    open: true,
+    open: false,
     inline: true,
     noInfo: true,
     host: require('my-local-ip')(),
-    port: 8090
+    port: 8090,
+    after: function(app, server, compiler) {
+      // do fancy stuff
+      console.log(`  App running at:`)
+      console.log(`  - Local:   http://${server.options.host}:${server.options.port}`)
+    }
   },
   performance: {
     hints: false
