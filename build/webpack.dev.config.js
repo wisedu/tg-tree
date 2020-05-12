@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config.js');
 
 module.exports = merge(webpackBaseConfig, {
+  mode: "development", 
   entry: './example/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -13,6 +14,9 @@ module.exports = merge(webpackBaseConfig, {
   devServer: {
     disableHostCheck: true,
     historyApiFallback: true,
+    hot: true,
+    open: true,
+    inline: true,
     noInfo: true,
     host: require('my-local-ip')(),
     port: 8090
@@ -22,10 +26,6 @@ module.exports = merge(webpackBaseConfig, {
   },
   devtool: '#eval-source-map',
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"development"'
-      }
-    })
+    // ...
   ]
 })
