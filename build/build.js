@@ -10,19 +10,18 @@ let template =
 const version = "${packageJSON.version}";
 const description = "${packageJSON.description}";
 const author = "${packageJSON.author}";
-const components = { TgTree};
-const install = function (Vue, opts = {}) {
-  if (install.installed) return;
-  Object.keys(components).forEach((key) => {
-    if (key === "loadSprite") return;
-    Vue.component(components[key].name, components[key]);
-  });
+
+const components = { TgTree };
+const install = function(Vue) {
+  Vue.component(this.name, this);
 };
+TgTree.install = install;
+
 if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
+  TgTree.install(window.Vue);
 }
 export { version, description, author, TgTree}
-export default Object.assign({}, {install, TgTree});`
+export default TgTree;`
 
 fs.writeFileSync(OUTPUT_PATH, template);
 console.log('[build entry] DONE:' + OUTPUT_PATH);
