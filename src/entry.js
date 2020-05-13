@@ -1,5 +1,5 @@
 import TgTree from './index.vue';
-const version = "1.0.3";
+const version = "1.0.4";
 const description = "A mobile tree component by Vue";
 const author = "金智教育 wisedu";
 
