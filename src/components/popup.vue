@@ -41,7 +41,7 @@ export default create({
   }
 });
 </script>
-<style>
+<style lang="css">
 .tree-modal {
   position: fixed;
   width: 100%;

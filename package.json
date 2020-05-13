@@ -1,7 +1,7 @@
 {
   "name": "tg-tree",
   "description": "A mobile tree component by Vue",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "金智教育 wisedu",
   "homepage": "http://github.com/wisedu",
   "packageName": "tg-tree",
@@ -15,7 +15,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
+    "autoprefixer": "^9.7.6",
+    "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
     "es6-promise": "^4.2.8",
@@ -37,7 +40,6 @@
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^4.2.2",
-    "axios": "^0.19.2"
+    "webpack-merge": "^4.2.2"
   }
 }

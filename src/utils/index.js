@@ -23,7 +23,7 @@ function isDef(value) {
 }
 
 export {
-  toTreeData,
+	toTreeData,
   isDef,
   isServer
 }

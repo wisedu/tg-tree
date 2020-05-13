@@ -28,7 +28,8 @@ export default {
   }
 }
 </script>
-<style lang="css" scoped>
+
+<style>
   .tree-breadcrumb {
     overflow: auto;
     font-size: 14px;

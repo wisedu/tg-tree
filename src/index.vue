@@ -13,7 +13,6 @@
       @click="$_cellClick">
       <span v-if="!labelName" class="tree-placeholder">{{placeholder}}</span>
     </tree-cell>
-<!--     <div class="tree-mask" v-show="maskShow" :style="[{height: vh + 'px'}]"> -->
     <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
       <!-- search搜索框 -->
       <tree-search 
@@ -84,7 +83,6 @@
         <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" :disabled-options="disabledOptions" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
       </div>
     </tree-popup>
-<!--     </div> -->
   </div>
 </template>
 
@@ -572,9 +570,6 @@ export default {
   created() {
     // 单选模式，created发生时options赋值时适用
     if(!this.multiple) this.initial();
-  },
-  destroyed() {
-    document.body.classList.remove( 'tree-overflow-hidden');
   }
 };
 </script>
