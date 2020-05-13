@@ -202,12 +202,16 @@ export default {
       type: Boolean,
       default: false
     },
+    fullname: {
+      type: Boolean,
+      default: false
+    },
     divider: { //多选分割符
       type: String,
       default: ',',
       validator: function(value){
         return [',','-','/','%','&','--'].indexOf(value)>-1;
-     }
+      }
     }
   },
   watch: {
@@ -386,7 +390,6 @@ export default {
      */
     $_radioCancel(e) {
       this.maskShow = false;
-      document.body.classList.remove( 'tree-overflow-hidden');
     },
     /**
      *  功能说明：多选模式下，详情清单中选择项变更变化触发时间
@@ -406,7 +409,6 @@ export default {
       this.searchList = []; //清空搜索
       this.searchResult = '';//清空搜索
       this.maskShow = false;
-      document.body.classList.remove( 'tree-overflow-hidden');
       let arr = this.checkboxSelectors.map(function(item){
         return item.name;
       });
@@ -524,8 +526,6 @@ export default {
      */
     openMaskAction(){
       const that = this;
-      // 禁止body滚动
-      document.body.classList.add( 'tree-overflow-hidden');
       // 重新计算当前客户端高度
       let clientHeight = document.documentElement.clientHeight;
       this.vh = this.vh>clientHeight?this.vh:clientHeight;
@@ -561,8 +561,14 @@ export default {
      */
     closeMaskAction(item){
       this.maskShow = false;
-      // 解除body滚动
-      document.body.classList.remove( 'tree-overflow-hidden');
+      if(this.fullname) {
+        let breads = JSON.parse(JSON.stringify(this.breadOptions));
+        breads.shift();
+        let fullNames = breads.map(obj => {
+          return obj.name
+        });
+        item.name = fullNames.join('/');
+      }
       if(this.isView) this.labelName = item.name;
       this.$emit('selected-click',item);
     }

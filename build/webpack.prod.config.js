@@ -32,7 +32,7 @@ let config = merge(webpackBaseConfig, {
     // new BundleAnalyzerPlugin()
   ],
   optimization: {
-    minimize: false,
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         sourceMap: true,

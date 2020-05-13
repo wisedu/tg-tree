@@ -45,7 +45,7 @@
       :parentSelectable="true" 
       :is-view="true"
       :is-async="true"
-      hasSearch  
+      hasSearch 
       @cell-click="cellClick('asyncSingle')"
       @selector-click="asyncSingleLoadOptions"
       @on-search="searchHandle"

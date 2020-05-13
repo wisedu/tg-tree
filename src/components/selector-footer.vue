@@ -9,8 +9,7 @@
     <div class="tree-selecter-footer-comfirm">
       <tree-button type="primary" round @btn-click="$_confirm" :disabled="false">确定</tree-button>
     </div>
-    <div class="tree-popup" v-if="popupVisible">
-      <div class="tree-popup-mask"></div>
+    <tree-popup v-model="popupVisible" :style="{ width: '100%'}" position="bottom">
       <div class="tree-popup-content">
         <div class="tree-popup-toolbar">
           <div class="tree-toolbar-left" @click="$_toolbarCancel">{{cancel}}</div>
@@ -35,18 +34,20 @@
           </tree-cell>
         </div>
       </div>
-    </div>
+    </tree-popup>
   </div>
 </template>
 
 <script>
 import TreeButton from './button';
 import TreeCell from './cell';
+import TreePopup from './popup'
 export default {
   name: 'tree-selector-footer',
   components: {
     [TreeButton.name]: TreeButton,
-    [TreeCell.name]: TreeCell
+    [TreeCell.name]: TreeCell,
+    [TreePopup.name]: TreePopup
   },
   data(){
     return {
@@ -110,60 +111,46 @@ export default {
 };
 </script>
 <style lang="css" scoped>
-  .tree-selector-footer {
-    padding: 0 17px;
-  }
-  .tree-selector-footer:after {
-    display: block;
-    content: '';
-    clear: both;
-  }
-  .tree-selector-footer-detail {
-    float: left;
-    display: flex;
-    align-items: center;
-    width: 66.67%;
-    line-height: 36px;
-  }
-  .tree-selecter-footer-comfirm {
-    float: left;
-    width: 33.33%;
-  }
-  .tree-svg {
-    width: 21px; 
-    height: 21px;
-    vertical-align: middle;
-    overflow: hidden;
-  }
-  .tree-popup-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,.7);
-    z-index: 1000;
-  }
-  .tree-popup-content {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #FFF;
-    z-index: 1001;
-  }
-  .tree-popup-content-list {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  .tree-popup-content-list .tree-cell:not(:last-child):after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1px;
-    background: #EDF2FB;
+.tree-selector-footer {
+  padding: 0 17px;
+}
+.tree-selector-footer:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+.tree-selector-footer-detail {
+  float: left;
+  display: flex;
+  align-items: center;
+  width: 66.67%;
+  line-height: 36px;
+}
+.tree-selecter-footer-comfirm {
+  float: left;
+  width: 33.33%;
+}
+.tree-svg {
+  width: 21px; 
+  height: 21px;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.tree-popup-content {
+  background-color: #FFF;
+}
+.tree-popup-content-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.tree-popup-content-list .tree-cell:not(:last-child):after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #EDF2FB;
 }
 .tree-popup-toolbar {
   display: flex;
