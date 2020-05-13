@@ -30,7 +30,7 @@
       :keyId="customSingleId"
       :keyName="customSingleName"
       :options="customSingleOptions" 
-      :parentSelectable="true" 
+      :parentSelectable="false" 
       :is-view="false"
       @selected-click="getCustomSingleSelectedValue"
       style="margin-bottom:5px;">
@@ -45,7 +45,8 @@
       :parentSelectable="true" 
       :is-view="true"
       :is-async="true"
-      hasSearch 
+      hasSearch
+      fullname 
       @cell-click="cellClick('asyncSingle')"
       @selector-click="asyncSingleLoadOptions"
       @on-search="searchHandle"
@@ -223,9 +224,9 @@
         this.customSingleOptions = treeData.datas;
       },
       // 【isView=false】【单选】【同步】模式下，获取选中值 
-      getCustomSingleSelectedValue(item){
+      getCustomSingleSelectedValue(item, fullname){
         this.customSingleId = item.id;
-        this.customSingleName = item.name;
+        this.customSingleName = fullname;
       },
       /************************* Ⅰ· 同步-单选 END ****************************/
 

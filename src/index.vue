@@ -347,6 +347,7 @@ export default {
       }else{
         // 父级不可选模式(parentSelectable = false)
         if(item.isParent === 0) {
+          this.dealWithBread(item);
           this.closeMaskAction(item);
         }else{
           if(this.isSamelevelCheck(item)) return;
@@ -561,16 +562,17 @@ export default {
      */
     closeMaskAction(item){
       this.maskShow = false;
+      let fullname;
       if(this.fullname) {
         let breads = JSON.parse(JSON.stringify(this.breadOptions));
         breads.shift();
-        let fullNames = breads.map(obj => {
+        fullname = breads.map(obj => {
           return obj.name
         });
-        item.name = fullNames.join('/');
+        fullname = fullname.join('/');
       }
-      if(this.isView) this.labelName = item.name;
-      this.$emit('selected-click',item);
+      if(this.isView) this.labelName = fullname || item.name;
+      this.$emit('selected-click',item, fullname);
     }
   },
   created() {
