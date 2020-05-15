@@ -53,7 +53,7 @@ export default {
   }
 };
 </script>
-<style lang="css" scoped>
+<style lang="css">
   .tree-button {
     position: relative;
     display: block;
@@ -64,7 +64,6 @@ export default {
     text-align: center;
     border: none;
     border-radius: 4px;
-    box-sizing: border-box;
     outline: none;
     -webkit-transition: all .3s;
     transition: all .3s;

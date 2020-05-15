@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import style from '../src/style/style.css'
 export default {
   data () {
     return {}

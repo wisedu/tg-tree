@@ -97,7 +97,6 @@ export default {
     color: #43454F;
     font-size: 14px;
     background: #FFFFFF;
-    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
   }
   .tree-cell-inner {
@@ -105,7 +104,6 @@ export default {
     align-items: center;
     min-height: 50px;
     padding: 8px 17px;
-    box-sizing: border-box;
   }
   .tree-cell-left {
     display: flex;

@@ -41,5 +41,12 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
-  }
+  },
+  "browserslist": [
+    "Android >= 4.0",
+    "iOS >= 7",
+    "> 1%",
+    "last 2 versions"
+  ],
+  "license": "MIT"
 }

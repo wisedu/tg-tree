@@ -97,6 +97,7 @@ import TreeCheckboxList from './components/checkbox-list'
 import TreeButton from './components/button'
 import TreeSelectorFooter from './components/selector-footer'
 import TreePopup from './components/popup'
+import './style/style.css'
 
 
 export default {
