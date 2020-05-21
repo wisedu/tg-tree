@@ -1,89 +1,73 @@
 <template>
-  <div class="tg-tree">
-    <!-- cell模式 -->
-    <tree-cell
-      v-if="isView" 
-      :title="title" 
-      :keyName="labelName" 
-      :required="required"
-      :disabled="disabled"
-      :align="align"
-      :solid="solid"
-      :arrow="arrow"
-      @click="$_cellClick">
-      <span v-if="!labelName" class="tree-placeholder">{{placeholder}}</span>
-    </tree-cell>
-    <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
-      <!-- search搜索框 -->
-      <tree-search 
-        v-if="hasSearch && isAsync" 
-        v-model="searchResult" 
-        :placeholder="searchPlaceholder"  
-        @on-search="$_searchHandle"
-        @on-change="$_searchChange">
-      </tree-search>
-      <template v-if="searchResult">
-        <div class="tree-search-list" :style="[{height: searchHeight + 'px'}]">
-          <!-- 单选搜索list -->
-          <tree-radio-list 
-            v-if="!multiple"
-            v-model="radioValue"
-            :options="searchList" 
-            @item-checked="$_searchItemChecked">
-          </tree-radio-list>
-          <!-- 多选搜索list -->
-          <tree-checkbox-list 
-            v-if="multiple"
-            v-model="checkboxValue" 
-            :options="searchList"
-            :disabled-options="disabledOptions" 
-            @item-click="$_searchItemChecked">
-          </tree-checkbox-list>
-          <div class="tree-search-nodata" v-if="searchResult&&!searchList.length">
-            <svg class="icon" style="width: 4em; height: 4em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2119"><path d="M660.48 823.08096c-8.4224 0.8192-16.96256 1.23904-25.6 1.23904-144.21248 0-261.12-116.90752-261.12-261.12s116.90752-261.12 261.12-261.12c8.63744 0 17.1776 0.41984 25.6 1.23904V281.6h-76.8c-42.41664 0-76.8-34.38336-76.8-76.8V128H148.48v768h512v-72.91904z m51.2-10.24V896c0 28.27776-22.92224 51.2-51.2 51.2H148.48c-28.27776 0-51.2-22.92224-51.2-51.2V128c0-28.27776 22.92224-51.2 51.2-51.2h384a25.6 25.6 0 0 1 18.10176 7.49824l153.6 153.6A25.6 25.6 0 0 1 711.68 256v57.55648c106.73152 32.79616 184.32 132.16 184.32 249.64352 0 62.8864-22.23104 120.58112-59.264 165.65248l136.24576 136.2432c9.9968 9.99936 9.9968 26.20928 0 36.20608-9.9968 9.9968-26.20672 9.9968-36.20352 0l-136.2432-136.2432A260.52352 260.52352 0 0 1 711.68 812.84352zM558.08 164.20608V204.8c0 14.13888 11.46112 25.6 25.6 25.6h40.59648L558.08 164.20352z m227.3408 545.29792C822.1696 671.6928 844.8 620.09088 844.8 563.2c0-115.93472-93.98528-209.92-209.92-209.92s-209.92 93.98528-209.92 209.92 93.98528 209.92 209.92 209.92c56.89088 0 108.4928-22.6304 146.30144-59.3792a25.8688 25.8688 0 0 1 4.23936-4.23936zM225.28 418.56c-14.13888 0-25.6-11.46112-25.6-25.6s11.46112-25.6 25.6-25.6h119.04c14.13888 0 25.6 11.46112 25.6 25.6s-11.46112 25.6-25.6 25.6H225.28z m0-136.96c-14.13888 0-25.6-11.46112-25.6-25.6s11.46112-25.6 25.6-25.6h204.8c14.13888 0 25.6 11.46112 25.6 25.6s-11.46112 25.6-25.6 25.6H225.28z" fill="#C4C9D9"></path></svg>
-            <div>暂无数据</div>
-          </div>
+  <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
+    <!-- search搜索框 -->
+    <tree-search 
+      v-if="hasSearch && isAsync" 
+      v-model="searchResult" 
+      :placeholder="searchPlaceholder"  
+      @on-search="$_searchHandle">
+    </tree-search>
+    <template v-if="searchResult">
+      <div class="tree-search-list" :style="[{height: searchHeight + 'px'}]">
+        <!-- 单选搜索list -->
+        <tree-radio-list 
+          v-if="!multiple"
+          v-model="radioValue"
+          :options="searchList" 
+          @item-checked="$_searchItemChecked">
+        </tree-radio-list>
+        <!-- 多选搜索list -->
+        <tree-checkbox-list 
+          v-if="multiple"
+          v-model="checkboxValue"
+          :options="searchList"
+          :disabled-options="disabledOptions" 
+          @item-click="$_searchItemChecked">
+        </tree-checkbox-list>
+        <div class="tree-search-nodata" v-if="searchResult&&!searchList.length">
+          <svg class="icon" style="width: 4em; height: 4em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2119"><path d="M660.48 823.08096c-8.4224 0.8192-16.96256 1.23904-25.6 1.23904-144.21248 0-261.12-116.90752-261.12-261.12s116.90752-261.12 261.12-261.12c8.63744 0 17.1776 0.41984 25.6 1.23904V281.6h-76.8c-42.41664 0-76.8-34.38336-76.8-76.8V128H148.48v768h512v-72.91904z m51.2-10.24V896c0 28.27776-22.92224 51.2-51.2 51.2H148.48c-28.27776 0-51.2-22.92224-51.2-51.2V128c0-28.27776 22.92224-51.2 51.2-51.2h384a25.6 25.6 0 0 1 18.10176 7.49824l153.6 153.6A25.6 25.6 0 0 1 711.68 256v57.55648c106.73152 32.79616 184.32 132.16 184.32 249.64352 0 62.8864-22.23104 120.58112-59.264 165.65248l136.24576 136.2432c9.9968 9.99936 9.9968 26.20928 0 36.20608-9.9968 9.9968-26.20672 9.9968-36.20352 0l-136.2432-136.2432A260.52352 260.52352 0 0 1 711.68 812.84352zM558.08 164.20608V204.8c0 14.13888 11.46112 25.6 25.6 25.6h40.59648L558.08 164.20352z m227.3408 545.29792C822.1696 671.6928 844.8 620.09088 844.8 563.2c0-115.93472-93.98528-209.92-209.92-209.92s-209.92 93.98528-209.92 209.92 93.98528 209.92 209.92 209.92c56.89088 0 108.4928-22.6304 146.30144-59.3792a25.8688 25.8688 0 0 1 4.23936-4.23936zM225.28 418.56c-14.13888 0-25.6-11.46112-25.6-25.6s11.46112-25.6 25.6-25.6h119.04c14.13888 0 25.6 11.46112 25.6 25.6s-11.46112 25.6-25.6 25.6H225.28z m0-136.96c-14.13888 0-25.6-11.46112-25.6-25.6s11.46112-25.6 25.6-25.6h204.8c14.13888 0 25.6 11.46112 25.6 25.6s-11.46112 25.6-25.6 25.6H225.28z" fill="#C4C9D9"></path></svg>
+          <div>暂无数据</div>
         </div>
-      </template>
-      <template v-else>
-        <!-- 面包屑 -->
-        <tree-breadcrumb ref="breadcrumb">
-          <tree-breadcrumb-item v-for="(item,index) in breadOptions" :key="item.id" :item="item" @bread-click="$_breadClick" :data-index="index"></tree-breadcrumb-item>
-        </tree-breadcrumb>
-        <div class="tree-content" :style="[{height: ctxHeight + 'px'}]">
-          <!-- 单选list -->
-          <tree-radio-list 
-            v-if="!multiple"
-            v-model="radioValue" 
-            :options="radioOptions" 
-            @item-checked="$_itemChecked"
-            @next-click="$_nextClick" 
-            ref="radioList" 
-            :is-async="isAsync" 
-            :parent-selectable="parentSelectable">
-          </tree-radio-list>
-          <!-- 多选list -->
-          <tree-checkbox-list 
-            v-if="multiple"
-            v-model="checkboxValue" 
-            ref="checkboxList"
-            :options="checkboxOptions"
-            @item-click="$_itemClick"
-            @next-click="$_nextClick"
-            :is-async="isAsync"
-            :disabled-options="disabledOptions" 
-            :parent-selectable="parentSelectable">
-          </tree-checkbox-list>
-        </div>
-      </template>
-      <div class="tree-button-action" v-if="!multiple && !searchResult">
-        <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_radioCancel">取消</tree-button>
       </div>
-      <div class="tree-button-action" v-if="multiple || (multiple && searchResult)">
-        <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" :disabled-options="disabledOptions" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
+    </template>
+    <template v-else>
+      <!-- 面包屑 -->
+      <tree-breadcrumb ref="breadcrumb">
+        <tree-breadcrumb-item v-for="(item,index) in breadOptions" :key="item.id" :item="item" @bread-click="$_breadClick" :data-index="index"></tree-breadcrumb-item>
+      </tree-breadcrumb>
+      <div class="tree-content" :style="[{height: ctxHeight + 'px'}]">
+        <!-- 单选list -->
+        <tree-radio-list 
+          v-if="!multiple"
+          v-model="radioValue" 
+          :options="radioOptions" 
+          @item-checked="$_itemChecked"
+          @next-click="$_nextClick" 
+          ref="radioList" 
+          :is-async="isAsync" 
+          :parent-selectable="parentSelectable">
+        </tree-radio-list>
+        <!-- 多选list -->
+        <tree-checkbox-list 
+          v-if="multiple"
+          v-model="checkboxValue" 
+          ref="checkboxList"
+          :options="checkboxOptions"
+          @item-click="$_itemClick"
+          @next-click="$_nextClick"
+          :is-async="isAsync"
+          :disabled-options="disabledOptions" 
+          :parent-selectable="parentSelectable">
+        </tree-checkbox-list>
       </div>
-    </tree-popup>
-  </div>
+    </template>
+    <div class="tree-button-action" v-if="!multiple && !searchResult">
+      <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_radioCancel">取消</tree-button>
+    </div>
+    <div class="tree-button-action" v-if="multiple || (multiple && searchResult)">
+      <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" :disabled-options="disabledOptions" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
+    </div>
+  </tree-popup>
 </template>
 
 <script>
@@ -91,7 +75,6 @@ import { toTreeData } from 'utils'
 import TreeSearch from './components/search'
 import TreeBreadcrumb from './components/breadcrumb'
 import TreeBreadcrumbItem from './components/breadcrumb-item'
-import TreeCell from './components/cell'
 import TreeRadioList from './components/radio-list'
 import TreeCheckboxList from './components/checkbox-list'
 import TreeButton from './components/button'
@@ -106,7 +89,6 @@ export default {
     [TreeSearch.name]: TreeSearch,
     [TreeBreadcrumb.name]: TreeBreadcrumb,
     [TreeBreadcrumbItem.name]: TreeBreadcrumbItem,
-    [TreeCell.name]: TreeCell,
     [TreeRadioList.name]: TreeRadioList,
     [TreeCheckboxList.name]: TreeCheckboxList,
     [TreeButton.name]: TreeButton,
@@ -115,15 +97,13 @@ export default {
   },
   data(){
     return {
-      solid: true, // 固定title宽度
-      arrow: true, // 默认有箭头
       labelName: this.keyName, // 默认id对应name值
       searchResult: '',
       searchList: [],
       breadOptions: [
         {name: '全部',id:''}
       ],
-      radioValue: this.isView?this.value:this.keyId,
+      radioValue: this.keyId,
       radioOptions: [],
       checkboxValue: [],
       checkboxOptions: [],
@@ -134,30 +114,10 @@ export default {
     }
   },
   props: {
-    title: {
-      type: String,
-      default: ''
-    },
     keyId: [String,Number,Array], // 仅作用于isView = false模式下且为同步数据，数据回显;Array用于多选模式
     keyName: {
       type: String,
       default: ''
-    },
-    required: {
-      type: Boolean,
-      default: false
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    align: {
-      type: String,
-      default: 'right'
-    },
-    placeholder: {
-      type: String,
-      default: '请选择'
     },
     hasSearch: {
       type: Boolean,
@@ -195,10 +155,6 @@ export default {
       type: Boolean,
       default: true
     },
-    isView: { //是否嵌套cell使用，默认嵌套
-      type: Boolean,
-      default: true
-    },
     multiple: {
       type: Boolean,
       default: false
@@ -217,31 +173,17 @@ export default {
   },
   watch: {
     value: function(val) {
-      // value 值为boolean时，用作遮罩；非boolean用作选中值
-      if(typeof val === 'boolean') {
-        this.maskShow = val;
-        if(val) this.openMaskAction();
-      }else{
-        if(this.multiple){  //多选
-          this.checkboxValue = val
-        }else{
-          this.radioValue = val
-        }
-      }
+      this.maskShow = val;
+      if(val) this.openMaskAction();
     },
     keyName: function(value) {
       this.labelName = value
     },
     radioValue: function(newVal) {
-      // 注：newval == null,即非选中状态，不改变value值
-      if(this.isView && newVal != null){
-        this.$emit('input',newVal)
-      }
+      // console.log(newVal)
     },
     maskShow: function(newState){
-      if(!this.isView) {
-        this.$emit('input',newState)
-      }
+      this.$emit('input',newState)
     },
 
     options: function(newOpts,oldVal) {
@@ -314,16 +256,9 @@ export default {
         }
       }
     },
-    $_searchHandle(value,e) {
+    $_searchHandle(value) {
       // TODO: search方法
       this.$emit("on-search",value);
-    },
-    $_searchChange(value,e) {
-      if(value) {
-        // this.$emit("on-search",value);
-      }else{
-        this.searchList = []
-      }
     },
     $_searchItemChecked(item,index) {
       if(this.multiple) {
@@ -416,9 +351,6 @@ export default {
       });
       arr = arr.join(this.divider);
       this.labelName = arr;
-      if(this.isView) {
-        this.$emit('input',this.checkboxValue);
-      }
       this.$emit('selected-click', this.checkboxValue, this.labelName, this.checkboxSelectors);
     },
     /**
@@ -506,11 +438,7 @@ export default {
       this.checkboxOptions = treeJson;
       this.breadOptions[0].children = treeJson;
       // 判断是否自定义显示面板
-      if(this.isView){
-        this.checkboxValue = this.value;
-      }else{
-        this.checkboxValue = this.keyId;
-      }
+      this.checkboxValue = this.keyId;
       const that = this;
       let hashId = [];
       this.checkboxSelectors = [];
@@ -535,14 +463,14 @@ export default {
       if(this.isAsync) {
         this.breadOptions = [{name: '全部',id:''}];
         if(this.multiple) {
-          this.checkboxValue = this.isView?this.value:this.keyId;
+          this.checkboxValue = this.keyId;
           let labels = this.labelName.split(this.divider);
           this.checkboxSelectors = [];
           this.checkboxValue.forEach(function(id,index){
             that.checkboxSelectors.push({"id": id, "name": labels[index]});
           });
         }else{
-          this.radioValue = this.isView?this.value:this.keyId;
+          this.radioValue = this.keyId;
           this.sameLevel = null;
         }
       }else{
@@ -551,7 +479,7 @@ export default {
             if(this.multiple){
               this.multiInitial();
             }else{
-              this.radioValue = this.isView?this.value:this.keyId;
+              this.radioValue = this.keyId;
               this.initial();
             }
           }
@@ -572,7 +500,7 @@ export default {
         });
         fullname = fullname.join('/');
       }
-      if(this.isView) this.labelName = fullname || item.name;
+      this.labelName = fullname || item.name;
       this.$emit('selected-click',item, fullname);
     }
   },

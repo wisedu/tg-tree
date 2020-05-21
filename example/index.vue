@@ -1,25 +1,6 @@
 <template>
   <div class="tree-demo">
     <p>单选树</p>
-    <tg-tree 
-      title="标题" 
-      v-model="demoValue"
-      :options="demoData"
-      :parentSelectable="false"
-      style="margin-bottom:5px;">
-    </tg-tree>
-  <!-- 同步单选树 -->
-    <tg-tree 
-      title="单选树" 
-      v-model="value"
-      :keyName="keyName" 
-      :options="options" 
-      :parentSelectable="false" 
-      :is-view="true"
-      @cell-click="cellClick('single')" 
-      @selected-click="getSingleSelectedValue"
-      style="margin-bottom:5px;">
-    </tg-tree>
     <!-- 单选树自定义展示面板 -->
     <tree-cell title="自定义单选树面板" @click="customSingleTree" align="right" arrow style="margin-bottom:5px;" solid>
       <span>{{customSingleName}}</span>
@@ -31,26 +12,7 @@
       :keyName="customSingleName"
       :options="customSingleOptions" 
       :parentSelectable="false" 
-      :is-view="false"
       @selected-click="getCustomSingleSelectedValue"
-      style="margin-bottom:5px;">
-    </tg-tree>
-  <!-- 异步单选树 -->
-    <tg-tree 
-      title="异步单选树" 
-      v-model="asyncSingleValue" 
-      :keyName="asyncSingleName"
-      :options="asyncSingleOptions"
-      :searchOptions="searchOptions"
-      :parentSelectable="false" 
-      :is-view="true"
-      :is-async="true"
-      hasSearch
-      fullname 
-      @cell-click="cellClick('asyncSingle')"
-      @selector-click="asyncSingleLoadOptions"
-      @on-search="searchHandle"
-      @selected-click="getAsyncSingleSelectedValue"
       style="margin-bottom:5px;">
     </tg-tree>
     <!-- 单选树自定义展示面板 -->
@@ -64,25 +26,12 @@
       :options="customAsyncSingleOptions"
       :searchOptions="searchOptions" 
       :parentSelectable="false" 
-      :is-view="false"
       :is-async="true" 
       @selector-click="customAsyncSingleLoadOptions"
       @selected-click="getCustomAsyncSingleSelectedValue"
       style="margin-bottom:5px;">
     </tg-tree>
     <p>多选树</p>
-  <!-- 同步多选树 -->
-    <tg-tree 
-      title="多选树" 
-      v-model="multiValue"
-      :keyName="multiKeyName" 
-      :options="multiOptions" 
-      :parentSelectable="false" 
-      :is-view="true" 
-      multiple
-      @cell-click="cellClick('multi')"
-      style="margin-bottom:5px;">
-    </tg-tree>
     <!-- 多选树自定义展示面板 -->
     <tree-cell title="自定义多选树面板" @click="customMultiTree" align="right" arrow style="margin-bottom:5px;" solid>
       <span>{{customMultiName}}</span>
@@ -92,27 +41,9 @@
       :keyId="customMultiIds"
       :keyName="customMultiName" 
       :options="customMultiOptions"
-      :parentSelectable="false"
-      :is-view="false"
+      :parentSelectable="true"
       multiple
       @selected-click="getCustomMultiSelectedValue">
-    </tg-tree>
-  <!-- 异步多选树 -->
-    <tg-tree 
-      title="异步多选树" 
-      v-model="asyncMultiValue"
-      :keyName="asyncMultiKeyName" 
-      :options="asyncMultiOptions"
-      :searchOptions="searchOptions" 
-      :parentSelectable="true" 
-      :is-view="true"
-      :is-async="true" 
-      multiple
-      hasSearch
-      @on-search="searchHandle"
-      @cell-click="cellClick('asyncMulti')"
-      @selector-click="asyncMultiLoadOptions"
-      style="margin-bottom:5px;">
     </tg-tree>
     <!-- 多选树自定义展示面板 -->
     <tree-cell title="自定义异步多选树面板" @click="customAsyncMultiTree" align="right" arrow style="margin-bottom:5px;" solid>
@@ -124,7 +55,6 @@
       :keyName="customAsyncMultiName" 
       :options="customAsyncMultiOptions" 
       :parentSelectable="false" 
-      :is-view="false"
       :disabledOptions="disabledOptions"
       :is-async="true"
       multiple
