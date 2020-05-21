@@ -364,10 +364,23 @@ export default {
      */
     $_itemClick(item,index){
       if(index === -1){
+        if(item.children && item.children.length && this.checkboxSelectors.length) this.$_delChildrenSelector(item);
         this.checkboxSelectors.push(item);
       }else{
         this.checkboxSelectors.splice(index,1);
       }
+    },
+    $_delChildrenSelector(item) {
+      const _this = this;
+      let ids = this.checkboxSelectors.map(selector => selector.id);
+      item.children.forEach(child => {
+        let index = ids.indexOf(child.id);
+        if(index > -1) {
+          ids.splice(index,1);
+        }
+        if(child.children && child.children.length) _this.$_delChildrenSelector(child);
+      })
+      this.checkboxSelectors = ids.length ? this.checkboxSelectors.filter(selector => ids.indexOf(selector.id) > -1) : [];
     },
     $_nextClick(item) {
       if(this.multiple){
