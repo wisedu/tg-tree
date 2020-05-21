@@ -5,7 +5,7 @@
       title="标题" 
       v-model="demoValue"
       :options="demoData"
-      :parentSelectable="true"
+      :parentSelectable="false"
       style="margin-bottom:5px;">
     </tg-tree>
   <!-- 同步单选树 -->
@@ -42,7 +42,7 @@
       :keyName="asyncSingleName"
       :options="asyncSingleOptions"
       :searchOptions="searchOptions"
-      :parentSelectable="true" 
+      :parentSelectable="false" 
       :is-view="true"
       :is-async="true"
       hasSearch
@@ -63,7 +63,7 @@
       :keyName="customAsyncSingleName"
       :options="customAsyncSingleOptions"
       :searchOptions="searchOptions" 
-      :parentSelectable="true" 
+      :parentSelectable="false" 
       :is-view="false"
       :is-async="true" 
       @selector-click="customAsyncSingleLoadOptions"
@@ -158,8 +158,8 @@
         options: [],//treeData.datas,
         // 自定义展示面板 -- 同步单选树参数
         customSingleValue: false,
-        customSingleId: '',//''
-        customSingleName: '',//''
+        customSingleId: '000423',//''
+        customSingleName: '行政部门\/人事处、人才工作领导小组办公室\/综合科',//''
         customSingleOptions: [], //treeData.datas,
         // 异步单选树
         asyncSingleValue: '',//'1002'
