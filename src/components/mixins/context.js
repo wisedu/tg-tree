@@ -1,6 +1,6 @@
 export default {
   id: 1,
-  zIndex: 2000,
+  zIndex: 3000,
   stack: [],
   lockCount: 0,
 
