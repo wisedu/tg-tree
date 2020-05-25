@@ -2,13 +2,13 @@
   <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
     <!-- search搜索框 -->
     <tree-search 
-      v-if="hasSearch && isAsync" 
+      v-if="hasSearch && async" 
       v-model="searchResult" 
-      :placeholder="searchPlaceholder"  
+      :placeholder="placeholder"  
       @on-search="$_searchHandle">
     </tree-search>
     <template v-if="searchResult">
-      <div class="tree-search-list" :style="[{height: searchHeight + 'px'}]">
+      <div class="tree-search-list" :style="[{height: 'calc(100vh - ' + searchH + 'px)'}]">
         <!-- 单选搜索list -->
         <tree-radio-list 
           v-if="!multiple"
@@ -35,30 +35,32 @@
       <tree-breadcrumb ref="breadcrumb">
         <tree-breadcrumb-item v-for="(item,index) in breadOptions" :key="item.id" :item="item" @bread-click="$_breadClick" :data-index="index"></tree-breadcrumb-item>
       </tree-breadcrumb>
-      <div class="tree-content" :style="[{height: ctxHeight + 'px'}]">
-        <!-- 单选list -->
-        <tree-radio-list 
-          v-if="!multiple"
-          v-model="radioValue" 
-          :options="radioOptions" 
-          @item-checked="$_itemChecked"
-          @next-click="$_nextClick" 
-          ref="radioList" 
-          :is-async="isAsync" 
-          :parent-selectable="parentSelectable">
-        </tree-radio-list>
-        <!-- 多选list -->
-        <tree-checkbox-list 
-          v-if="multiple"
-          v-model="checkboxValue" 
-          ref="checkboxList"
-          :options="checkboxOptions"
-          @item-click="$_itemClick"
-          @next-click="$_nextClick"
-          :is-async="isAsync"
-          :disabled-options="disabledOptions" 
-          :parent-selectable="parentSelectable">
-        </tree-checkbox-list>
+      <div class="tree-content" :style="[{height: 'calc(100vh - ' + usedH + 'px)'}]">
+        <template v-if="multiple">
+          <!-- 多选list -->
+          <tree-checkbox-list 
+            v-model="checkboxValue" 
+            ref="checkboxList"
+            :options="checkboxOptions"
+            @item-click="$_itemClick"
+            @next-click="$_nextClick"
+            :is-async="async"
+            :disabled-options="disabledOptions" 
+            :parent-selectable="parentSelectable">
+          </tree-checkbox-list>
+        </template>
+        <template v-else>
+          <!-- 单选list -->
+          <tree-radio-list 
+            v-model="radioValue" 
+            :options="radioOptions" 
+            @item-checked="$_itemChecked"
+            @next-click="$_nextClick" 
+            ref="radioList" 
+            :is-async="async" 
+            :parent-selectable="parentSelectable">
+          </tree-radio-list>
+        </template>
       </div>
     </template>
     <div class="tree-button-action" v-if="!multiple && !searchResult">
@@ -72,29 +74,13 @@
 
 <script>
 import { toTreeData } from 'utils'
-import TreeSearch from './components/search'
-import TreeBreadcrumb from './components/breadcrumb'
-import TreeBreadcrumbItem from './components/breadcrumb-item'
-import TreeRadioList from './components/radio-list'
-import TreeCheckboxList from './components/checkbox-list'
-import TreeButton from './components/button'
-import TreeSelectorFooter from './components/selector-footer'
-import TreePopup from './components/popup'
+import { TreeSearch, TreeBreadcrumb, TreeBreadcrumbItem, TreeRadioList, TreeCheckboxList, TreeButton, TreeSelectorFooter, TreePopup } from './components'
 import './style/style.css'
 
 
 export default {
-  name: 'tg-tree',
-  components: {
-    [TreeSearch.name]: TreeSearch,
-    [TreeBreadcrumb.name]: TreeBreadcrumb,
-    [TreeBreadcrumbItem.name]: TreeBreadcrumbItem,
-    [TreeRadioList.name]: TreeRadioList,
-    [TreeCheckboxList.name]: TreeCheckboxList,
-    [TreeButton.name]: TreeButton,
-    [TreeSelectorFooter.name]: TreeSelectorFooter,
-    [TreePopup.name]: TreePopup
-  },
+  name: 'm-tree',
+  components: { TreeSearch, TreeBreadcrumb, TreeBreadcrumbItem, TreeRadioList, TreeCheckboxList, TreeButton, TreeSelectorFooter, TreePopup },
   data(){
     return {
       labelName: this.keyName, // 默认id对应name值
@@ -109,8 +95,7 @@ export default {
       checkboxOptions: [],
       sameLevel: null,  // 用来标识选项是否同属同一级
       maskShow: false,  // 遮罩
-      vh: document.documentElement.clientHeight, // 客户端高度
-      checkboxSelectors: [], //多选选中项对象
+      checkboxSelectors: [] //多选选中项对象
     }
   },
   props: {
@@ -123,7 +108,7 @@ export default {
       type: Boolean,
       default: false
     },
-    searchPlaceholder: {
+    placeholder: {
       type: String,
       default: '搜索'
     },
@@ -147,7 +132,7 @@ export default {
         return []
       }
     },
-    isAsync: {
+    async: {
       type: Boolean,
       default: false
     },
@@ -167,7 +152,7 @@ export default {
       type: String,
       default: ',',
       validator: function(value){
-        return [',','-','/','%','&','--'].indexOf(value)>-1;
+        return [',','-','/','%','&','--'].indexOf(value) > -1
       }
     }
   },
@@ -188,13 +173,13 @@ export default {
 
     options: function(newOpts,oldVal) {
       if(this.multiple){  //多选
-        if(this.isAsync){
+        if(this.async){
           this.checkboxOptions = newOpts;
         }else{
           this.multiInitial();
         }
       }else{
-        if(this.isAsync){ //异步
+        if(this.async){ //异步
           this.radioOptions = newOpts;
         }else{
           this.initial();
@@ -209,19 +194,11 @@ export default {
     }
   },
   computed: {
-    ctxHeight() {
-      let h = this.vh - 105;
-      if(this.hasSearch && this.isAsync) {
-        h = this.vh - 155;
-      }
-      return h;
+    usedH() {
+      return this.hasSearch && this.async ? 155 : 105;
     },
-    searchHeight() {
-      let h = this.vh - 50;
-      if(this.multiple) {
-        h = this.vh -100;
-      }
-      return h;
+    searchH() {
+      return this.multiple ? 100 : 50;
     }
   },
   methods: {
@@ -235,7 +212,7 @@ export default {
       if(this.multiple){
         if(index === this.breadOptions.length-1) return;
         this.breadOptions.splice(index+1);
-        if(!this.isAsync){
+        if(!this.async){
           // 同步数据,bread切换，breadOptions数据取自options.children
           let datas = this.breadOptions[index].children;
           this.$refs.checkboxList.treeData = JSON.parse(JSON.stringify(datas));
@@ -247,7 +224,7 @@ export default {
         if(index === this.breadOptions.length-1) return;
         this.breadOptions.splice(index+1);
         this.radioValue = null;
-        if(!this.isAsync){
+        if(!this.async){
           // 同步数据,bread切换，breadOptions数据取自options.children
           let datas = index>0?this.breadOptions[index-1].children:this.breadOptions[0].children;
           this.$refs.radioList.treeData = JSON.parse(JSON.stringify(datas));
@@ -307,13 +284,13 @@ export default {
     $_nextClick(item) {
       if(this.multiple){
         if(this.breadOptions[this.breadOptions.length-1].pId === item.pId) this.breadOptions.splice(-1,1,item);
-        if(this.isAsync){
+        if(this.async){
           this.$emit("selector-click",item.id,item);
         }
         this.dealWithBread(item);
       }else{
         this.radioValue = null;
-        if(this.isAsync){
+        if(this.async){
           if(this.sameLevel === item.pId) this.breadOptions.splice(-1,1,item);
           this.$emit("selector-click",item.id,item)
         }else{
@@ -456,11 +433,8 @@ export default {
      */
     openMaskAction(){
       const that = this;
-      // 重新计算当前客户端高度
-      let clientHeight = document.documentElement.clientHeight;
-      this.vh = this.vh>clientHeight?this.vh:clientHeight;
       // 异步breadcrumb初始化
-      if(this.isAsync) {
+      if(this.async) {
         this.breadOptions = [{name: '全部',id:''}];
         if(this.multiple) {
           this.checkboxValue = this.keyId;
@@ -474,15 +448,15 @@ export default {
           this.sameLevel = null;
         }
       }else{
-          if(this.options.length){
-            this.breadOptions = [{name: '全部',id:''}];
-            if(this.multiple){
-              this.multiInitial();
-            }else{
-              this.radioValue = this.keyId;
-              this.initial();
-            }
+        if(this.options.length){
+          this.breadOptions = [{name: '全部',id:''}];
+          if(this.multiple){
+            this.multiInitial();
+          }else{
+            this.radioValue = this.keyId;
+            this.initial();
           }
+        }
       }
     },
     /**

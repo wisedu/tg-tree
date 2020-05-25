@@ -19,21 +19,13 @@
         }
       }
     },
-    data() {
-      return {
-
-      };
-    },
     methods: {
       clickHandle(item){
         let index = this.$el.getAttribute('data-index');
-        this.$emit('bread-click',item,Number(index));
+        this.$emit('bread-click', item, Number(index));
       }
-    },
-    mounted() {
-      
     }
-  };
+  }
 </script>
 <style lang="css" scoped>
   .tree-breadcrumb-child {

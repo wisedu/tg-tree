@@ -35,11 +35,8 @@ export default create({
     currentTransition() {
       return this.transition || (this.position === '' ? 'tree-fade' : `popup-slide-${this.position}`);
     }
-  },
-  methods: {
-
   }
-});
+})
 </script>
 <style lang="css">
 .tree-modal {

@@ -101,7 +101,7 @@ export default {
         this.treeData = item.children;
       }
       this.$emit('next-click', item);
-    },
+    }
   }
 }
 </script>

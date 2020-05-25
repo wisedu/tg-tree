@@ -108,7 +108,7 @@ export default {
       this.$set(this.currentValue[index],'unchecked',!item.unchecked)
     }
   }
-};
+}
 </script>
 <style lang="css" scoped>
 .tree-selector-footer {

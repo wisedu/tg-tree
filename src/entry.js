@@ -1,16 +1,16 @@
-import TgTree from './index.vue';
-const version = "1.0.8";
+import mTree from './index.vue';
+const version = "1.1.1";
 const description = "A mobile tree component by Vue";
 const author = "金智教育 wisedu";
 
-const components = { TgTree };
+const components = { mTree };
 const install = function(Vue) {
   Vue.component(this.name, this);
 };
-TgTree.install = install;
+mTree.install = install;
 
 if (typeof window !== 'undefined' && window.Vue) {
-  TgTree.install(window.Vue);
+  mTree.install(window.Vue);
 }
-export { version, description, author, TgTree}
-export default TgTree;
+export { version, description, author, mTree}
+export default mTree;

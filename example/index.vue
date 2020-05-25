@@ -5,7 +5,7 @@
     <tree-cell title="自定义单选树面板" @click="customSingleTree" align="right" arrow style="margin-bottom:5px;" solid>
       <span>{{customSingleName}}</span>
     </tree-cell>
-    <tg-tree 
+    <m-tree 
       v-model="customSingleValue" 
       hasSearch
       :keyId="customSingleId"
@@ -14,29 +14,29 @@
       :parentSelectable="false" 
       @selected-click="getCustomSingleSelectedValue"
       style="margin-bottom:5px;">
-    </tg-tree>
+    </m-tree>
     <!-- 单选树自定义展示面板 -->
     <tree-cell title="自定义异步单选树面板" @click="customAsyncSingleTree" align="right" arrow style="margin-bottom:5px;" solid>
       <span>{{customAsyncSingleName}}</span>
     </tree-cell>
-    <tg-tree 
+    <m-tree 
       v-model="customAsyncSingleValue" 
       :keyId="customAsyncSingleId"
       :keyName="customAsyncSingleName"
       :options="customAsyncSingleOptions"
       :searchOptions="searchOptions" 
       :parentSelectable="false" 
-      :is-async="true" 
+      async
       @selector-click="customAsyncSingleLoadOptions"
       @selected-click="getCustomAsyncSingleSelectedValue"
       style="margin-bottom:5px;">
-    </tg-tree>
+    </m-tree>
     <p>多选树</p>
     <!-- 多选树自定义展示面板 -->
     <tree-cell title="自定义多选树面板" @click="customMultiTree" align="right" arrow style="margin-bottom:5px;" solid>
       <span>{{customMultiName}}</span>
     </tree-cell>
-    <tg-tree 
+    <m-tree 
       v-model="customMultiValue"
       :keyId="customMultiIds"
       :keyName="customMultiName" 
@@ -44,25 +44,25 @@
       :parentSelectable="true"
       multiple
       @selected-click="getCustomMultiSelectedValue">
-    </tg-tree>
+    </m-tree>
     <!-- 多选树自定义展示面板 -->
     <tree-cell title="自定义异步多选树面板" @click="customAsyncMultiTree" align="right" arrow style="margin-bottom:5px;" solid>
       <span>{{customAsyncMultiName}}</span>
     </tree-cell>
-    <tg-tree 
+    <m-tree 
       v-model="customAsyncMultiValue"
       :keyId="customAsyncMultiIds"
       :keyName="customAsyncMultiName" 
       :options="customAsyncMultiOptions" 
       :parentSelectable="false" 
       :disabledOptions="disabledOptions"
-      :is-async="true"
+      async
       multiple
       hasSearch
       @selector-click="customAsyncMultiLoadOptions"
       @selected-click="getCustomAsyncMultiSelectedValue"
       style="margin-bottom:5px;">
-    </tg-tree>
+    </m-tree>
   </div>
 </template>
 <style>
@@ -73,7 +73,7 @@
 
 <script type="text/javascript">
   import utils from './http'
-  import TgTree from '../src/index.vue'
+  import mTree from '../src/index.vue'
   import TreeCell from '../src/components/cell.vue'
   import treeData from "../mock/tree"
   import TreePopup from "../src/components/popup.vue"
@@ -124,7 +124,7 @@
       }
     },
     components: {
-      TgTree,TreeCell,TreePopup
+      mTree,TreeCell,TreePopup
     },
     methods:{
       cellClick(val){
