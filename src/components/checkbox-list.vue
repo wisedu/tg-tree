@@ -100,7 +100,7 @@ export default {
       }
     },
     $_nextClick(item) {
-      if(this.currentValue.indexOf(item.id) >-1 || this.disabledOptions) return;
+      if(this.currentValue.indexOf(item.id) >-1 || this.childrenDisabled) return;
       if(item.children && item.children.length) {
         this.treeData = item.children;
       }
