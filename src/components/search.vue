@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     onInput(e) {
-      this.$emit('on-change', this.currentValue, e);
+      this.$emit('on-change', e.target.value, e);
     },
     onBlur(e) {
       this.$emit('on-blur', this.currentValue, e);

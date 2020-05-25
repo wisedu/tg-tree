@@ -16,19 +16,20 @@
     <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
       <!-- search搜索框 -->
       <tree-search 
-        v-if="hasSearch && isAsync" 
+        v-if="hasSearch" 
         v-model="searchResult" 
-        :placeholder="searchPlaceholder"  
+        :placeholder="searchPlaceholder"
         @on-search="$_searchHandle"
         @on-change="$_searchChange">
       </tree-search>
       <template v-if="searchResult">
-        <div class="tree-search-list" :style="[{height: searchHeight + 'px'}]">
+        <div class="tree-search-list" :style="[{height: 'calc(100vh - ' + searchH + 'px)'}]">
           <!-- 单选搜索list -->
           <tree-radio-list 
             v-if="!multiple"
             v-model="radioValue"
-            :options="searchList" 
+            :options="searchList"
+            children-disabled  
             @item-checked="$_searchItemChecked">
           </tree-radio-list>
           <!-- 多选搜索list -->
@@ -36,7 +37,8 @@
             v-if="multiple"
             v-model="checkboxValue" 
             :options="searchList"
-            :disabled-options="disabledOptions" 
+            :disabled-options="disabledOptions"
+            children-disabled  
             @item-click="$_searchItemChecked">
           </tree-checkbox-list>
           <div class="tree-search-nodata" v-if="searchResult&&!searchList.length">
@@ -50,7 +52,7 @@
         <tree-breadcrumb ref="breadcrumb">
           <tree-breadcrumb-item v-for="(item,index) in breadOptions" :key="item.id" :item="item" @bread-click="$_breadClick" :data-index="index"></tree-breadcrumb-item>
         </tree-breadcrumb>
-        <div class="tree-content" :style="[{height: ctxHeight + 'px'}]">
+        <div class="tree-content" :style="[{height: 'calc(100vh - ' + usedH + 'px)'}]">
           <!-- 单选list -->
           <tree-radio-list 
             v-if="!multiple"
@@ -267,19 +269,11 @@ export default {
     }
   },
   computed: {
-    ctxHeight() {
-      let h = this.vh - 105;
-      if(this.hasSearch && this.isAsync) {
-        h = this.vh - 155;
-      }
-      return h;
+    usedH() {
+      return this.hasSearch ? 155 : 105;
     },
-    searchHeight() {
-      let h = this.vh - 50;
-      if(this.multiple) {
-        h = this.vh -100;
-      }
-      return h;
+    searchH() {
+      return this.multiple ? 100 : 50;
     }
   },
   methods: {
@@ -314,20 +308,28 @@ export default {
         }
       }
     },
-    $_searchHandle(value,e) {
+    $_searchHandle(value) {
       // TODO: search方法
-      this.$emit("on-search",value);
+      this.$emit("on-search",value)
     },
-    $_searchChange(value,e) {
-      if(value) {
-        // this.$emit("on-search",value);
-      }else{
-        this.searchList = []
+    $_searchChange(value) {
+      if(value && !this.isAsync) {
+        if(this.parentSelectable) {
+          this.searchList = this.options.filter(option => {
+            return option.name.indexOf(value) > -1
+          })
+        }else{
+          this.searchList = this.options.filter(option => {
+            return option.name.indexOf(value) > -1 && !option.isParent
+          })
+        }
       }
+      if(!value) this.searchList = []
     },
     $_searchItemChecked(item,index) {
       if(this.multiple) {
-        if(index === -1){
+        if(index === -1) {
+          if(item.children && item.children.length && this.checkboxSelectors.length) this.$_delChildrenSelector(item);
           this.checkboxSelectors.push(item);
         }else{
           this.checkboxSelectors.splice(index,1);
@@ -372,15 +374,14 @@ export default {
     },
     $_delChildrenSelector(item) {
       const _this = this;
-      let ids = this.checkboxSelectors.map(selector => selector.id);
       item.children.forEach(child => {
-        let index = ids.indexOf(child.id);
+        let index = _this.checkboxValue.indexOf(child.id);
         if(index > -1) {
-          ids.splice(index,1);
+          _this.checkboxValue.splice(index, 1);
         }
         if(child.children && child.children.length) _this.$_delChildrenSelector(child);
       })
-      this.checkboxSelectors = ids.length ? this.checkboxSelectors.filter(selector => ids.indexOf(selector.id) > -1) : [];
+      this.checkboxSelectors = this.checkboxValue.length ? this.checkboxSelectors.filter(selector => _this.checkboxValue.indexOf(selector.id) > -1) : [];
     },
     $_nextClick(item) {
       if(this.multiple){

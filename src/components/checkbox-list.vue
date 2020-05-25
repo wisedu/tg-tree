@@ -16,7 +16,7 @@
           <path d="M512 972.8C257.9 972.8 51.2 766.1 51.2 512 51.2 257.9 257.9 51.2 512 51.2c254.1 0 460.8 206.7 460.8 460.8 0 254.1-206.7 460.8-460.8 460.8z m0-870.4c-225.9 0-409.6 183.8-409.6 409.6S286.1 921.6 512 921.6 921.6 737.8 921.6 512 737.8 102.4 512 102.4z" fill="#C4C9D9"></path>
         </svg>
       </label>
-      <div slot="right" id="tree-checkbox-next" class="tree-checkbox-next" :class="{'disabled': currentValue.indexOf(item.id) >-1}" @click.stop="$_nextClick(item,currentValue.indexOf(item.id) >-1)" v-if="(isAsync&&item.isParent) || (item.children && item.children.length)">
+      <div slot="right" id="tree-checkbox-next" class="tree-checkbox-next" :class="{'disabled': currentValue.indexOf(item.id) >-1 || childrenDisabled}" @click.stop="$_nextClick(item)" v-if="(isAsync && item.isParent) || (item.children && item.children.length)">
         <label for="icon-text">
           <svg class="tree-svg" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <path d="M992 704h-95.5V512c0-17.7-14.3-32-32-32h-319l-1.3-160h96.1c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384.2c-17.7 0-32 14.3-32 32v256c0 17.7 14.3 32 32 32h96.1v160H160.1c-17.7 0-32 14.3-32 32v192H32c-17.7 0-32 14.3-32 32v256c0 17.7 14.3 32 32 32h256.2c17.7 0 32-14.3 32-32V736c0-17.7-14.3-32-32-32h-96.1V544h640.4v160h-96c-17.7 0-32 14.3-32 32v0.1l0.5 256c0 17.6 14.3 31.9 32 31.9h255c17.7 0 32-14.3 32-32V736c0-17.7-14.3-32-32-32z" fill="#3B7BFF"></path><path d="M65.3 768h190.9v192H65.3zM416.3 64h192.1v192H416.3zM768.5 768h192.1v192H768.5z" fill="#FFFFFF"></path>
@@ -46,6 +46,10 @@ export default {
     parentSelectable: {
       type: Boolean,
       default: true
+    },
+    childrenDisabled: {
+      type: Boolean,
+      default: false
     },
     isAsync: {
       type: Boolean,
@@ -95,8 +99,8 @@ export default {
         this.$emit('item-click', item, index);
       }
     },
-    $_nextClick(item,disabled) {
-      if(disabled) return;
+    $_nextClick(item) {
+      if(this.currentValue.indexOf(item.id) >-1 || this.disabledOptions) return;
       if(item.children && item.children.length) {
         this.treeData = item.children;
       }

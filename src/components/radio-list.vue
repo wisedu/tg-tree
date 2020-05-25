@@ -47,6 +47,10 @@ export default {
     parentSelectable: {
       type: Boolean,
       default: true
+    },
+    childrenDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -68,11 +72,12 @@ export default {
   },
   methods: {
     $_checkedClick(item) {
-      if(!this.parentSelectable&&item.isParent) return; // 父级不可选
+      if(!this.parentSelectable && item.isParent) return; // 父级不可选
       this.currentValue = item.id;
       this.$emit('item-checked', item);
     },
     $_nextClick(item) {
+      if(this.disabledOptions) return
       if(item.children && item.children.length) {
         this.treeData = item.children;
       }

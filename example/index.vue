@@ -80,6 +80,7 @@
       :parentSelectable="true" 
       :is-view="true" 
       multiple
+      hasSearch
       @cell-click="cellClick('multi')"
       style="margin-bottom:5px;">
     </tg-tree>
@@ -104,7 +105,7 @@
       :keyName="asyncMultiKeyName" 
       :options="asyncMultiOptions"
       :searchOptions="searchOptions" 
-      :parentSelectable="false" 
+      :parentSelectable="true" 
       :is-view="true"
       :is-async="true" 
       multiple
