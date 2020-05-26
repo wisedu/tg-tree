@@ -12,7 +12,8 @@
     <tg-tree 
       title="单选树" 
       v-model="value"
-      :keyName="keyName" 
+      :keyName="keyName"
+      hasSearch 
       :options="options" 
       :parentSelectable="true" 
       :is-view="true"

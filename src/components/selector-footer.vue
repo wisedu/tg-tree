@@ -92,7 +92,9 @@ export default {
     },
     $_toolbarConfirm: function(){
       let result = JSON.parse(JSON.stringify(this.currentValue));
+      let outResult = [];
       result = result.filter(function(item){
+        if(item.unchecked) outResult.push(item);
         return !item.unchecked
       });
       result = result.map(function(item){
@@ -100,7 +102,7 @@ export default {
         return item;
       });
       this.$emit('input', result);
-      this.$emit('change', result);
+      this.$emit('change', result, outResult);
       this.popupVisible = false;
     },
     $_selectedToggle: function(item,index){

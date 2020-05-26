@@ -79,7 +79,7 @@
         </div>
       </template>
       <div class="tree-button-action" v-if="!multiple && !searchResult">
-        <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="$_radioCancel">取消</tree-button>
+        <tree-button type="primary" round style="width:50%;margin: 0 auto;" @btn-click="maskShow = false">取消</tree-button>
       </div>
       <div class="tree-button-action" v-if="multiple || (multiple && searchResult)">
         <tree-selector-footer v-model="checkboxSelectors" @change="$_checkboxSelectorChange" :disabled-options="disabledOptions" @confirm="$_checkboxSelectorConfirm"></tree-selector-footer>
@@ -131,7 +131,6 @@ export default {
       checkboxOptions: [],
       sameLevel: null,  // 用来标识选项是否同属同一级
       maskShow: false,  // 遮罩
-      vh: document.documentElement.clientHeight, // 客户端高度
       checkboxSelectors: [], //多选选中项对象
     }
   },
@@ -265,7 +264,7 @@ export default {
       this.updateBreadcrumbScroll()
     },
     searchOptions: function(newOpts, oldOpts) {
-      this.searchList = newOpts;
+      this.searchList = newOpts
     }
   },
   computed: {
@@ -313,18 +312,28 @@ export default {
       this.$emit("on-search",value)
     },
     $_searchChange(value) {
+      const _this = this;
       if(value && !this.isAsync) {
+        // 非异步且多选模式下，父级与子级关系设置，父级选定，子集不再可选
+        let optionsClone = JSON.parse(JSON.stringify(this.options));
         if(this.parentSelectable) {
-          this.searchList = this.options.filter(option => {
+          this.searchList = optionsClone.filter(option => {
             return option.name.indexOf(value) > -1
           })
         }else{
-          this.searchList = this.options.filter(option => {
+          this.searchList = optionsClone.filter(option => {
             return option.name.indexOf(value) > -1 && !option.isParent
           })
         }
+        if(this.checkboxValue && this.checkboxValue.length) {
+          this.searchList.map(list => {
+            if(this.checkboxValue.indexOf(list.id) > -1 && list.children && list.children.length) {
+              _this.$_setChildrenLock(list, -1);
+            }
+          })
+        } 
       }
-      if(!value) this.searchList = []
+      if(!value) this.searchList = [];
     },
     $_searchItemChecked(item,index) {
       if(this.multiple) {
@@ -334,11 +343,34 @@ export default {
         }else{
           this.checkboxSelectors.splice(index,1);
         }
+        if(item.children && item.children.length) {
+          this.$_setChildrenLock(item, index);
+        }
       }else{
         this.searchList = [];
         this.searchResult = '';
         this.closeMaskAction(item);
       }
+    },
+    $_setChildrenLock(item, index) {
+      let children = this.$_getChildren(item);
+      this.searchList.map(list => {
+        if(children.indexOf(list.id) > -1) {
+          list.locked = index === -1 ? true : false;
+        }
+        return list
+      })
+    },
+    $_getChildren(item) {
+      const _this = this;
+      let ids = [];
+      item.children.forEach(child => {
+        ids.push(child.id);
+        if(child.children && child.children.length) {
+          ids = ids.concat(_this.$_getChildren(child));
+        }
+      })
+      return ids
     },
     $_itemChecked(item) {
       // 父级可选模式(parentSelectable = true)
@@ -371,7 +403,12 @@ export default {
       }else{
         this.checkboxSelectors.splice(index,1);
       }
+
     },
+    /**
+     *  功能说明：多选模式下，选中父级，清空该父级下已选的子项
+     *  @item: 当前点击项
+     */
     $_delChildrenSelector(item) {
       const _this = this;
       item.children.forEach(child => {
@@ -402,16 +439,18 @@ export default {
       }  
     },
     /**
-     *  功能说明：单选取消按钮
-     */
-    $_radioCancel(e) {
-      this.maskShow = false;
-    },
-    /**
-     *  功能说明：多选模式下，详情清单中选择项变更变化触发时间
+     *  功能说明：多选模式下，详情清单中选择项变更变化触发事件
      *  @opts: 选中项变更后的值，即【this.checkboxSelectors】
      */
-    $_checkboxSelectorChange(opts) {
+    $_checkboxSelectorChange(opts, delOpts) {
+      if(delOpts && delOpts.length && this.searchResult) {
+        const _this = this;
+        delOpts.forEach(opt => {
+          if(opt && opt.children.length) {
+            _this.$_setChildrenLock(opt);
+          }
+        })
+      }
       let selectors = [];
       opts.forEach(function(opt){
         selectors.push(opt.id);
@@ -421,7 +460,7 @@ export default {
     /**
      *  功能说明：多选模式下，确认按钮触发事件
      */
-    $_checkboxSelectorConfirm(){
+    $_checkboxSelectorConfirm() {
       this.searchList = []; //清空搜索
       this.searchResult = '';//清空搜索
       this.maskShow = false;
@@ -542,9 +581,6 @@ export default {
      */
     openMaskAction(){
       const that = this;
-      // 重新计算当前客户端高度
-      let clientHeight = document.documentElement.clientHeight;
-      this.vh = this.vh>clientHeight?this.vh:clientHeight;
       // 异步breadcrumb初始化
       if(this.isAsync) {
         this.breadOptions = [{name: '全部',id:''}];
