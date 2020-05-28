@@ -13,7 +13,7 @@
       title="单选树" 
       v-model="value"
       :keyName="keyName"
-      hasSearch 
+      hasSearch
       :options="options" 
       :parentSelectable="true" 
       :is-view="true"

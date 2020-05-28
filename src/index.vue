@@ -23,7 +23,7 @@
         @on-change="$_searchChange">
       </tree-search>
       <template v-if="searchResult">
-        <div class="tree-search-list" :style="[{height: 'calc(100vh - ' + searchH + 'px)'}]">
+        <div class="tree-search-list" :style="[{height: searchHeight + 'px'}]">
           <!-- 单选搜索list -->
           <tree-radio-list 
             v-if="!multiple"
@@ -52,7 +52,7 @@
         <tree-breadcrumb ref="breadcrumb">
           <tree-breadcrumb-item v-for="(item,index) in breadOptions" :key="item.id" :item="item" @bread-click="$_breadClick" :data-index="index"></tree-breadcrumb-item>
         </tree-breadcrumb>
-        <div class="tree-content" :style="[{height: 'calc(100vh - ' + usedH + 'px)'}]">
+        <div class="tree-content" :style="[{height: ctxHeight + 'px'}]">
           <!-- 单选list -->
           <tree-radio-list 
             v-if="!multiple"
@@ -131,6 +131,7 @@ export default {
       checkboxOptions: [],
       sameLevel: null,  // 用来标识选项是否同属同一级
       maskShow: false,  // 遮罩
+      vh: document.documentElement.clientHeight, // 客户端高度
       checkboxSelectors: [], //多选选中项对象
     }
   },
@@ -268,11 +269,11 @@ export default {
     }
   },
   computed: {
-    usedH() {
-      return this.hasSearch ? 155 : 105;
+    ctxHeight() {
+      return this.vh - (this.hasSearch ? 155 : 105);
     },
-    searchH() {
-      return this.multiple ? 100 : 50;
+    searchHeight () {
+      return this.vh - (this.multiple ? 100 : 50);
     }
   },
   methods: {
@@ -581,6 +582,9 @@ export default {
      */
     openMaskAction(){
       const that = this;
+      // 重新计算当前客户端高度
+      let clientHeight = document.documentElement.clientHeight;
+      this.vh = this.vh>clientHeight?this.vh:clientHeight;
       // 异步breadcrumb初始化
       if(this.isAsync) {
         this.breadOptions = [{name: '全部',id:''}];
