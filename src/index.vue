@@ -205,7 +205,7 @@ export default {
       type: Boolean,
       default: false
     },
-    fullname: {
+    fullname: { // 用于单选
       type: Boolean,
       default: false
     },
@@ -495,8 +495,17 @@ export default {
       this.breadOptions.forEach(function(option){
         ids.push(option.id);
       });
-      let idx = ids.indexOf(item.id);
-      if(idx === -1) {
+
+      if(this.breadOptions.length > 1) {
+        let lastOption = this.breadOptions.pop();   // 消除同级单选的问题
+        let idx = ids.indexOf(item.id);
+        if(lastOption.pId === item.pId && idx === -1) {
+          this.breadOptions.push(item);
+        } else {
+          this.breadOptions.push(lastOption);
+          this.breadOptions.push(item);
+        }
+      } else {
         this.breadOptions.push(item);
       }
     },
@@ -612,7 +621,7 @@ export default {
       }
     },
     /**
-     *  功能说明： 单选--关闭遮罩选择层，去除body禁用样式，处理外抛或外部显示数据
+     *  功能说明： 单选--关闭遮罩选择层，处理外抛或外部显示数据
      *   @item: 当前选中项
      */
     closeMaskAction(item){
