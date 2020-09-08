@@ -246,7 +246,7 @@ export default {
       }
     },
 
-    options: function(newOpts,oldVal) {
+    options: function(newOpts) {
       if(this.multiple){  //多选
         if(this.isAsync){
           this.checkboxOptions = newOpts;
@@ -261,10 +261,10 @@ export default {
         }
       }
     },
-    breadOptions: function(newBread,oldBread){
+    breadOptions: function(){
       this.updateBreadcrumbScroll()
     },
-    searchOptions: function(newOpts, oldOpts) {
+    searchOptions: function(newOpts) {
       this.searchList = newOpts
     }
   },

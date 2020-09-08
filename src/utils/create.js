@@ -13,4 +13,4 @@ export default function(sfc) {
   sfc.methods = sfc.methods || {};
   sfc.methods.isDef = isDef;
   return sfc;
-};
+}

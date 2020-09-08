@@ -11,7 +11,6 @@ const version = "${packageJSON.version}";
 const description = "${packageJSON.description}";
 const author = "${packageJSON.author}";
 
-const components = { TgTree };
 const install = function(Vue) {
   Vue.component(this.name, this);
 };

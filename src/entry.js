@@ -3,7 +3,6 @@ const version = "1.1.3";
 const description = "A mobile tree component by Vue";
 const author = "金智教育 wisedu";
 
-const components = { TgTree };
 const install = function(Vue) {
   Vue.component(this.name, this);
 };

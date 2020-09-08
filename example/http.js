@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-const UA = navigator.userAgent.toLowerCase()
-
 function serialize(data) {
   if (!data) return '';
   var pairs = [], value;
   for (var name in data) {
-    if (!data.hasOwnProperty(name)) continue;
+    if (!Object.prototype.hasOwnProperty.call(data,name)) continue;
     if (typeof data[name] === 'function') continue;
     value = String(data[name]);
     name = encodeURIComponent(name);

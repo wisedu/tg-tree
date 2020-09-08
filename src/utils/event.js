@@ -4,14 +4,15 @@ export let supportsPassive = false;
 if (!isServer) {
   try {
     const opts = {};
+    /*eslint getter-return: 0 */
     Object.defineProperty(opts, 'passive', {
       get() {
-        /* istanbul ignore next */
         supportsPassive = true;
+        // no returns.
       }
     });
     window.addEventListener('test-passive', null, opts);
-  } catch (e) {}
+  } catch (e) {/* Ignore */}
 }
 
 export function on(target, event, handler, passive = false) {

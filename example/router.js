@@ -1,5 +1,4 @@
-
-const Index = resolve => require(['./index.vue'], resolve)
+import Index from "./index.vue"
 
 export default {
     routes: [

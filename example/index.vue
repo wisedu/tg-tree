@@ -30,13 +30,14 @@
       hasSearch
       :keyId="customSingleId"
       :keyName="customSingleName"
+      fullname
       :options="customSingleOptions" 
       :parentSelectable="false" 
       :is-view="false"
       @selected-click="getCustomSingleSelectedValue"
       style="margin-bottom:5px;">
     </tg-tree>
-  <!-- 异步单选树 -->
+    <!-- 异步单选树 -->
     <tg-tree 
       title="异步单选树" 
       v-model="asyncSingleValue" 
@@ -148,7 +149,6 @@
   import TgTree from '../src/index.vue'
   import TreeCell from '../src/components/cell.vue'
   import treeData from "../mock/tree"
-  import TreePopup from "../src/components/popup.vue"
   export default {
     data(){
       return {
@@ -156,6 +156,7 @@
         demoData: treeData.datas,
         // 默认展示面板 -- 同步单选树参数
         value: "000423",
+        /*eslint no-useless-escape: 0 */
         keyName: '行政部门\/人事处、人才工作领导小组办公室\/综合科',
         options: [],//treeData.datas,
         // 自定义展示面板 -- 同步单选树参数
@@ -181,6 +182,7 @@
         // 自定义展示面板--同步多选树参数
         customMultiValue: false,
         customMultiIds: ["6", "8", "000153"], // [],
+        /*eslint no-useless-escape: 0 */
         customMultiName: '经济实体,附属单位,直属单位\/江浦实验农场\/生产科',//'',
         customMultiOptions: [],//treeData.datas,
         // 异步多选树
@@ -196,7 +198,7 @@
       }
     },
     components: {
-      TgTree,TreeCell,TreePopup
+      TgTree,TreeCell
     },
     methods:{
       cellClick(val){
@@ -223,10 +225,11 @@
       // 【isView=false】【单选】【同步】模式下，激活打开树组件 
       customSingleTree(){
         this.customSingleValue = true;
-        this.customSingleOptions = treeData.datas;
+        this.customSingleOptions = treeData.datas; // [{id: "0", isParent: 0, name: "女", pId: ""},{id: "1", isParent: 0, name: "男", pId: ""}]
       },
       // 【isView=false】【单选】【同步】模式下，获取选中值 
       getCustomSingleSelectedValue(item, fullname){
+        console.log(item, fullname)
         this.customSingleId = item.id;
         this.customSingleName = fullname;
       },
@@ -283,7 +286,7 @@
         this.customMultiOptions = treeData.datas;
       },
       // 【isView=false】【多选】【同步】模式下，获取选中值 
-      getCustomMultiSelectedValue(ids,labels,opts){
+      getCustomMultiSelectedValue(ids,labels){
         this.customMultiIds = ids;
         this.customMultiName = labels;
       },
@@ -313,7 +316,7 @@
         });
       },
       // 【isView=false】【多选】【异步】模式下，获取选中值 
-      getCustomAsyncMultiSelectedValue(ids,labels,opts){
+      getCustomAsyncMultiSelectedValue(ids,labels){
         this.customAsyncMultiIds = ids;
         this.customAsyncMultiName = labels;
       },

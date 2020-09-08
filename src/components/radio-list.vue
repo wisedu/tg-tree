@@ -1,6 +1,6 @@
 <template>
   <div class="tree-radio-list">
-    <tree-cell v-for="(item, index) in treeData" :key="item.id" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
+    <tree-cell v-for="item in treeData" :key="item.id" :title="item.name" @on-label-click="$_checkedClick(item)" align="default" :class="[{'parent-not-selectable': !parentSelectable && item.isParent}]">
       <label slot="left" class="icon" for="tree-radio-next" @click.stop="$_checkedClick(item)" v-if="parentSelectable || !item.isParent">
         <svg class="tree-svg" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" v-if="currentValue === item.id">
           <path d="M512 51.2C257.5 51.2 51.2 257.5 51.2 512S257.5 972.8 512 972.8 972.8 766.5 972.8 512 766.5 51.2 512 51.2z m0 716.8c-141.4 0-256-114.6-256-256s114.6-256 256-256 256 114.6 256 256-114.6 256-256 256z" fill="#3B7BFF"></path>
@@ -66,7 +66,7 @@ export default {
     currentValue(val) {
       this.$emit('input', val)
     },
-    options(newOpts, oldOpts) {
+    options(newOpts) {
       this.treeData = newOpts;
     }
   },
