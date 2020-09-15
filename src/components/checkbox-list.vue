@@ -3,7 +3,7 @@
     <tree-cell 
       v-for="(item, index) in treeData" 
       :key="index" 
-      :title="item.name" 
+      :title="item.display || item.name" 
       @on-label-click="$_checkedClick(item)" 
       align="default" 
       :disabled="disabledOptions.indexOf(item.id)>-1 || item.locked"

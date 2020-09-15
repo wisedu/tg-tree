@@ -213,7 +213,7 @@ export default {
       type: String,
       default: ',',
       validator: function(value){
-        return [',','-','/','%','&','--'].indexOf(value)>-1;
+        return [',','-','/','%','&','--'].indexOf(value) > -1;
       }
     }
   },
@@ -537,7 +537,7 @@ export default {
       if(this.radioValue == null || this.radioValue === '') {
         this.radioOptions = treeJson;
       }else{
-        // MASK: 利用hash法快速定位选定项
+        // MARK: 利用hash法快速定位选定项
         let hashId = [];
         this.options.forEach(function(obj){
           hashId[obj.id] = obj;
