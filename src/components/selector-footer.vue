@@ -20,7 +20,7 @@
           <tree-cell 
             v-for="(item, index) in currentValue" 
             :key="item.id" 
-            :title="item.name" 
+            :title="item.display || item.name" 
             @on-label-click="$_selectedToggle(item,index)" 
             :disabled="disabledOptions.indexOf(item.id)>-1">
             <label slot="left" @click.stop="$_selectedToggle(item,index)">
