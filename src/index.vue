@@ -1,6 +1,7 @@
 <template>
   <tree-popup v-model="maskShow" :style="{ width: '100%', 'background-color': '#EDF2FB'}" position="right" get-container="body" ref="popup">
     <!-- search搜索框 -->
+
     <tree-search 
       v-if="hasSearch && async" 
       v-model="searchResult" 
@@ -10,6 +11,7 @@
     <template v-if="searchResult">
       <div class="tree-search-list" :style="[{height: 'calc(100vh - ' + searchH + 'px)'}]">
         <!-- 单选搜索list -->
+       
         <tree-radio-list 
           v-if="!multiple"
           v-model="radioValue"
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-import { toTreeData } from 'utils'
+import { toTreeData,treeToArr } from 'utils'
 import { TreeSearch, TreeBreadcrumb, TreeBreadcrumbItem, TreeRadioList, TreeCheckboxList, TreeButton, TreeSelectorFooter, TreePopup } from './components'
 import './style/style.css'
 
@@ -485,6 +487,7 @@ export default {
     closeMaskAction(item){
       this.maskShow = false;
       let fullname;
+      console.log(item)
       if(this.fullname) {
         let breads = JSON.parse(JSON.stringify(this.breadOptions));
         breads.shift();
@@ -494,7 +497,7 @@ export default {
         fullname = fullname.join('/');
       }
       this.labelName = fullname || item.name;
-      this.$emit('selected-click',item, fullname);
+      this.$emit('selected-click',item, this.labelName);
     }
   },
   created() {

@@ -12,6 +12,7 @@
       :keyName="customSingleName"
       :options="customSingleOptions" 
       :parentSelectable="false" 
+      :optionIsTree="false"
       @selected-click="getCustomSingleSelectedValue"
       style="margin-bottom:5px;">
     </m-tree>
