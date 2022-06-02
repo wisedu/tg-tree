@@ -119,6 +119,10 @@ export default {
       }
     },
     value: {},
+    optionIsTree:{
+      type:Boolean,
+      default: false
+    },
     options: {
       type: Array,
       required: true,
@@ -377,7 +381,14 @@ export default {
      *  功能说明： 单选数据初始化
      */
     initial() {
-      const treeJson = toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      let treeJson = []
+      let tempOptions=this.options;
+      if(this.optionIsTree){
+        treeJson=this.options;
+        tempOptions=treeToArr(treeJson);
+      } else{
+        treeJson=  toTreeData(tempOptions, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      }
       if(!treeJson.length || this.breadOptions.length>1) return;
       this.breadOptions[0].children = treeJson;
       if(this.radioValue == null || this.radioValue === '') {
@@ -385,7 +396,7 @@ export default {
       }else{
         // MASK: 利用hash法快速定位选定项
         let hashId = [];
-        this.options.forEach(function(obj){
+        tempOptions.forEach(function(obj){
           hashId[obj.id] = obj;
         });
         let radioObj = hashId[this.radioValue];
@@ -410,7 +421,15 @@ export default {
      *  功能说明： 多选数据初始化
      */
     multiInitial() {
-      const treeJson = toTreeData(this.options, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      let treeJson =[]
+      let tempOptions=this.options;
+      if(this.optionIsTree){
+        treeJson=this.options;
+        tempOptions=treeToArr(treeJson);
+      }else{
+        treeJson= toTreeData(tempOptions, '', {ukey:"id", pkey:'pId', toCKey:'children'});
+      }
+       
       if(!treeJson.length) return;
       this.checkboxOptions = treeJson;
       this.breadOptions[0].children = treeJson;
@@ -419,7 +438,7 @@ export default {
       const that = this;
       let hashId = [];
       this.checkboxSelectors = [];
-      this.options.forEach(function(opt){
+      tempOptions.forEach(function(opt){
         if(that.checkboxValue.indexOf(opt.id)>-1){
           hashId[opt.id] = opt
         }
