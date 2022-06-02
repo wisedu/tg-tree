@@ -402,9 +402,10 @@ export default {
           hashId[obj.id] = obj;
         });
         let radioObj = hashId[this.radioValue];
-        this.labelName = radioObj.name; // 针对options不为空时，复显radioValue的KeyName
+        
         // 判断给定值id是否有效
         if(radioObj){
+          this.labelName = radioObj.name; // 针对options不为空时，复显radioValue的KeyName
           let parentIds = [radioObj];
           let pId = radioObj.pId;
           while(pId !== ''){

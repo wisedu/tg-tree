@@ -12,7 +12,7 @@
       :keyName="customSingleName"
       :options="customSingleOptions" 
       :parentSelectable="false" 
-      :optionIsTree="false"
+      :optionIsTree="true"
       @selected-click="getCustomSingleSelectedValue"
       style="margin-bottom:5px;">
     </m-tree>
@@ -152,7 +152,7 @@
       // 【isView=false】【单选】【同步】模式下，激活打开树组件 
       customSingleTree(){
         this.customSingleValue = true;
-        this.customSingleOptions = treeData.datas;
+        this.customSingleOptions = treeData.datas2;
       },
       // 【isView=false】【单选】【同步】模式下，获取选中值 
       getCustomSingleSelectedValue(item, fullname){
