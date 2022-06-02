@@ -35,9 +35,24 @@ function toTreeData(data, parent_id, options, checked) {
 function isDef(value) {
   return value !== undefined && value !== null;
 }
-
+//将多维数据转成一维数组
+function treeToArr(treeData){
+  var arrData=[]
+  var dataHandle=function(data){
+      for(var n=0;n<data.length;n++){
+           let item=data[n];
+           arrData.push(item)
+           if(item.children){
+             dataHandle(item.children)
+           }
+      }
+  }
+  dataHandle(treeData);
+  return arrData
+}
 export {
 	toTreeData,
+  treeToArr,
   isDef,
   isServer
 }

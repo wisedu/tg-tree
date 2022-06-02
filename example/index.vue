@@ -1,11 +1,12 @@
 <template>
   <div class="tree-demo">
-    <p>单选树</p>
+    <p>单选树(树形数据)</p>
     <tg-tree 
       title="标题" 
       v-model="demoValue"
       :options="demoData"
       :parentSelectable="true"
+      :optionIsTree="true"
       style="margin-bottom:5px;">
     </tg-tree>
   <!-- 同步单选树 -->
@@ -153,7 +154,7 @@
     data(){
       return {
         demoValue: '',
-        demoData: treeData.datas,
+        demoData: treeData.datas2,
         // 默认展示面板 -- 同步单选树参数
         value: "000423",
         /*eslint no-useless-escape: 0 */
